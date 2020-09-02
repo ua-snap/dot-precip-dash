@@ -5,6 +5,9 @@ Template for SNAP Dash apps.
 import os
 import datetime
 import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_dangerously_set_inner_html as ddsih
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import flask
@@ -26,6 +29,85 @@ app.title = luts.title
 app.layout = layout
 
 
+def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
+    pf_data_table = []
+    for duration in [
+        "60m",
+        "2h",
+        "3h",
+        "6h",
+        "12h",
+        "24h",
+        "3d",
+        "4d",
+        "7d",
+        "10d",
+        "20d",
+        "30d",
+        "45d",
+        "60d",
+    ]:
+        values = (
+            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
+        )
+        row = []
+        row.append(html.Th(duration))
+        for value in values.values:
+            row.append(html.Td(value))
+
+        pf_data_table.append(html.Tr(row))
+
+    return pf_data_table
+
+
+def generate_table(dt):
+    return html.Div(
+        className="tabContent",
+        children=[
+            html.H3("GFDL-CM3"),
+            html.Table(
+                id="gfdl-pf-table",
+                className="table is-bordered",
+                children=[
+                    html.Tr(
+                        children=[
+                            html.Th("Duration", rowSpan=2,),
+                            html.Th("Average recurrence interval(years)", colSpan=9,),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Th(col)
+                            for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                        ]
+                    ),
+                    html.Tbody(generate_table_data(dt, "GFDL-CM3", "2020-2049")),
+                ],
+            ),
+            html.H3("NCAR-CCSM4"),
+            html.Table(
+                id="ncar-pf-table",
+                className="table is-bordered",
+                children=[
+                    html.Tr(
+                        children=[
+                            html.Th("Duration", rowSpan=2,),
+                            html.Th("Average recurrence interval(years)", colSpan=9,),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Th(col)
+                            for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                        ]
+                    ),
+                    html.Tbody(generate_table_data(dt, "NCAR-CCSM4", "2020-2049")),
+                ],
+            ),
+        ],
+    )
+
+
 @app.callback(Output("layer", "children"), [Input("ak-map", "click_lat_lng")])
 def drop_pin_on_map(click_lat_lng):
     print(click_lat_lng)
@@ -38,7 +120,7 @@ def drop_pin_on_map(click_lat_lng):
     ]
 
 
-@app.callback(Output("pf-table", "pf_data"), [Input("ak-map", "click_lat_lng")])
+@app.callback(Output("pf-data-tables", "children"), [Input("ak-map", "click_lat_lng")])
 def return_pf_data(click_lat_lng):
     wgs84 = pyproj.CRS("EPSG:4326")
     epsg3338 = pyproj.CRS("EPSG:3338")
@@ -48,7 +130,7 @@ def return_pf_data(click_lat_lng):
     print(nad83_lat_lon)
     pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
     print(pf_data)
-    return pf_data
+    return generate_table_data(pf_data)
 
 
 if __name__ == "__main__":
