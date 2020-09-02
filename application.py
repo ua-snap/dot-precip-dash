@@ -61,7 +61,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
     return pf_data_table
 
 
-def generate_table(dt):
+def generate_table(dt, ts_str):
     return [
         html.H3("GFDL-CM3"),
         html.Table(
@@ -79,7 +79,7 @@ def generate_table(dt):
                         html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
-                html.Tbody(generate_table_data(dt, "GFDL-CM3", "2020-2049")),
+                html.Tbody(generate_table_data(dt, "GFDL-CM3", ts_str)),
             ],
         ),
         html.H3("NCAR-CCSM4"),
@@ -98,7 +98,7 @@ def generate_table(dt):
                         html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
-                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", "2020-2049")),
+                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", ts_str)),
             ],
         ),
     ]
@@ -116,17 +116,21 @@ def drop_pin_on_map(click_lat_lng):
     ]
 
 
-@app.callback(Output("pf-data-tables", "children"), [Input("ak-map", "click_lat_lng")])
-def return_pf_data(click_lat_lng):
+@app.callback(
+    Output("pf-data-tables", "children"),
+    [Input("ak-map", "click_lat_lng"), Input("timeslice-dropdown", "value")],
+)
+def return_pf_data(click_lat_lng, ts_str):
     wgs84 = pyproj.CRS("EPSG:4326")
     epsg3338 = pyproj.CRS("EPSG:3338")
     nad83_lat_lon = pyproj.transform(
         wgs84, epsg3338, click_lat_lng[0], click_lat_lng[1]
     )
+    print(ts_str)
     print(nad83_lat_lon)
     pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
     print(pf_data)
-    return generate_table(pf_data)
+    return generate_table(pf_data, ts_str)
 
 
 if __name__ == "__main__":

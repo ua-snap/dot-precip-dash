@@ -5,97 +5,14 @@ GUI for app
 
 import os
 from datetime import datetime
-import xarray as xr
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_dangerously_set_inner_html as ddsih
 import dash_leaflet as dl
-from data import fetch_data
 import luts
 
 # For hosting
 path_prefix = os.getenv("REQUESTS_PATHNAME_PREFIX") or "/"
-
-# da = fetch_data(25147.177637208086, 1728323.2602819062)
-
-
-# def generate_table_data(gcm="GFDL-CM3", ts_str="2020-2049"):
-#     pf_data_table = []
-#     for duration in [
-#         "60m",
-#         "2h",
-#         "3h",
-#         "6h",
-#         "12h",
-#         "24h",
-#         "3d",
-#         "4d",
-#         "7d",
-#         "10d",
-#         "20d",
-#         "30d",
-#         "45d",
-#         "60d",
-#     ]:
-#         values = (
-#             da.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
-#         )
-#         row = []
-#         row.append(html.Th(duration))
-#         for value in values.values:
-#             row.append(html.Td(value))
-#
-#         pf_data_table.append(html.Tr(row))
-#
-#     return pf_data_table
-#
-#
-# def generate_table():
-#     return html.Div(
-#         className="tabContent",
-#         children=[
-#             html.H3("GFDL-CM3"),
-#             html.Table(
-#                 id="gfdl-pf-table",
-#                 className="table is-bordered",
-#                 children=[
-#                     html.Tr(
-#                         children=[
-#                             html.Th("Duration", rowSpan=2,),
-#                             html.Th("Average recurrence interval(years)", colSpan=9,),
-#                         ]
-#                     ),
-#                     html.Tr(
-#                         children=[
-#                             html.Th(col)
-#                             for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-#                         ]
-#                     ),
-#                     html.Tbody(generate_table_data("GFDL-CM3", "2020-2049")),
-#                 ],
-#             ),
-#             html.H3("NCAR-CCSM4"),
-#             html.Table(
-#                 id="ncar-pf-table",
-#                 className="table is-bordered",
-#                 children=[
-#                     html.Tr(
-#                         children=[
-#                             html.Th("Duration", rowSpan=2,),
-#                             html.Th("Average recurrence interval(years)", colSpan=9,),
-#                         ]
-#                     ),
-#                     html.Tr(
-#                         children=[
-#                             html.Th(col)
-#                             for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-#                         ]
-#                     ),
-#                     html.Tbody(generate_table_data("NCAR-CCSM4", "2020-2049")),
-#                 ],
-#             ),
-#         ],
-#     )
 
 
 # Helper functions
@@ -157,7 +74,7 @@ about = wrap_in_section(
     [
         ddsih.DangerouslySetInnerHTML(
             f"""
-<h1 class="title is-3">Alaska Statewide Temperature Index</h1>
+<h1 class="title is-3">DOT Precipitation Application</h1>
 <p>&ldquo;Has it been warmer or colder lately in Alaska?&rdquo; Answer: &ldquo;It&rsquo;s complicated.&rdquo; Why? Alaska is a very large
 region with complex geography and sparse data availability. This site presents a statewide temperature index,
 a simple indicator that balances accessible information on temperature variation with the complexity of Alaska&rsquo;s climate.</p>
@@ -185,6 +102,15 @@ alaska_map = wrap_in_section(
             center=(62.5, -155),
             style={"width": "800px", "height": "600px"},
         ),
+        dcc.Dropdown(
+            id="timeslice-dropdown",
+            options=[
+                {"label": "2020-2049", "value": "2020-2049"},
+                {"label": "2050-2079", "value": "2050-2079"},
+                {"label": "2080-2099", "value": "2080-2099"},
+            ],
+            value="2020-2049",
+        ),
         dcc.Loading(
             id="loading-1",
             children=[html.Div(id="pf-data-tables", className="tabContent")],
@@ -192,30 +118,6 @@ alaska_map = wrap_in_section(
             className="loading-circle",
         ),
     ]
-)
-
-# Index as a scatter chart
-daily_index = wrap_in_section(
-    [
-        dcc.Loading(
-            id="loading-1",
-            children=[dcc.Graph(id="daily-index", config=luts.fig_configs)],
-            type="circle",
-            className="loading-circle",
-        ),
-        html.Div(
-            className="buttons is-right",
-            children=[
-                html.A(
-                    "Download data",
-                    className="button is-link",
-                    href="statewide-temperature-index/downloads/statewide_temperature_daily_index.csv",
-                )
-            ],
-        ),
-        dcc.Input(id="cache_check_input", type="text", placeholder="nonce"),
-    ],
-    section_classes="graph",
 )
 
 
