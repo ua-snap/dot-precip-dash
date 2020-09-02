@@ -47,14 +47,38 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
         "45d",
         "60d",
     ]:
-        values = (
+        pf_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
         )
-        values = values.round(decimals=2)
+        pf_values = pf_values.round(decimals=2)
+
+        pf_upper_values = (
+            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-upper")
+            / 1000
+        )
+        pf_upper_values = pf_upper_values.round(decimals=2)
+
+        pf_lower_values = (
+            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-lower")
+            / 1000
+        )
+        pf_lower_values = pf_lower_values.round(decimals=2)
+
         row = []
         row.append(html.Th(duration))
-        for value in values.values:
-            row.append(html.Td(value))
+        for i in range(len(pf_values)):
+            row.append(
+                html.Td(
+                    ddsih.DangerouslySetInnerHTML(
+                        f"""
+                <p align="center"><b>{pf_values.values[i]}</b></p>
+                <p align="center">( <i>{pf_lower_values.values[i]} - {pf_upper_values.values[i]}</i> )</p>
+                """
+                    )
+                )
+            )
+            # for value in pf_values.values:
+            #    row.append(html.Td(value))
 
         pf_data_table.append(html.Tr(row))
 
