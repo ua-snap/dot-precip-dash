@@ -185,7 +185,12 @@ alaska_map = wrap_in_section(
             center=(62.5, -155),
             style={"width": "800px", "height": "600px"},
         ),
-        html.Div(id="pf-data-tables", className="tabContent"),
+        dcc.Loading(
+            id="loading-1",
+            children=[html.Div(id="pf-data-tables", className="tabContent")],
+            type="circle",
+            className="loading-circle",
+        ),
     ]
 )
 

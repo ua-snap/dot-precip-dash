@@ -50,6 +50,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
         values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
         )
+        values = values.round(decimals=2)
         row = []
         row.append(html.Th(duration))
         for value in values.values:
@@ -61,51 +62,46 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
 
 
 def generate_table(dt):
-    return html.Div(
-        className="tabContent",
-        children=[
-            html.H3("GFDL-CM3"),
-            html.Table(
-                id="gfdl-pf-table",
-                className="table is-bordered",
-                children=[
-                    html.Tr(
-                        children=[
-                            html.Th("Duration", rowSpan=2,),
-                            html.Th("Average recurrence interval(years)", colSpan=9,),
-                        ]
-                    ),
-                    html.Tr(
-                        children=[
-                            html.Th(col)
-                            for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-                        ]
-                    ),
-                    html.Tbody(generate_table_data(dt, "GFDL-CM3", "2020-2049")),
-                ],
-            ),
-            html.H3("NCAR-CCSM4"),
-            html.Table(
-                id="ncar-pf-table",
-                className="table is-bordered",
-                children=[
-                    html.Tr(
-                        children=[
-                            html.Th("Duration", rowSpan=2,),
-                            html.Th("Average recurrence interval(years)", colSpan=9,),
-                        ]
-                    ),
-                    html.Tr(
-                        children=[
-                            html.Th(col)
-                            for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-                        ]
-                    ),
-                    html.Tbody(generate_table_data(dt, "NCAR-CCSM4", "2020-2049")),
-                ],
-            ),
-        ],
-    )
+    return [
+        html.H3("GFDL-CM3"),
+        html.Table(
+            id="gfdl-pf-table",
+            className="table is-bordered",
+            children=[
+                html.Tr(
+                    children=[
+                        html.Th("Duration", rowSpan=2,),
+                        html.Th("Average recurrence interval(years)", colSpan=9,),
+                    ]
+                ),
+                html.Tr(
+                    children=[
+                        html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                    ]
+                ),
+                html.Tbody(generate_table_data(dt, "GFDL-CM3", "2020-2049")),
+            ],
+        ),
+        html.H3("NCAR-CCSM4"),
+        html.Table(
+            id="ncar-pf-table",
+            className="table is-bordered",
+            children=[
+                html.Tr(
+                    children=[
+                        html.Th("Duration", rowSpan=2,),
+                        html.Th("Average recurrence interval(years)", colSpan=9,),
+                    ]
+                ),
+                html.Tr(
+                    children=[
+                        html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                    ]
+                ),
+                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", "2020-2049")),
+            ],
+        ),
+    ]
 
 
 @app.callback(Output("layer", "children"), [Input("ak-map", "click_lat_lng")])
@@ -130,7 +126,7 @@ def return_pf_data(click_lat_lng):
     print(nad83_lat_lon)
     pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
     print(pf_data)
-    return generate_table_data(pf_data)
+    return generate_table(pf_data)
 
 
 if __name__ == "__main__":
