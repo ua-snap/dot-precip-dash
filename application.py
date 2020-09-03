@@ -170,15 +170,13 @@ def drop_pin_on_map(click_lat_lng):
 
 
 @app.callback(Output("lat-input", "value"), [Input("ak-map", "click_lat_lng")])
-def chnage_lat(click_lat_lng):
-    print("Guess what?")
-    return click_lat_lng[0]
+def change_lat(click_lat_lng):
+    return round(click_lat_lng[0], 2)
 
 
 @app.callback(Output("lon-input", "value"), [Input("ak-map", "click_lat_lng")])
 def chnage_lat(click_lat_lng):
-    print("Guess what lon?")
-    return click_lat_lng[1]
+    return round(click_lat_lng[1], 2)
 
 
 @app.callback(
