@@ -29,7 +29,7 @@ app.title = luts.title
 app.layout = layout
 
 
-def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
+def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"):
     pf_data_table = []
     for duration in [
         "60m",
@@ -51,18 +51,24 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
         pf_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
         )
-        pf_values = pf_values.round(decimals=2)
 
         pf_upper_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-upper")
             / 1000
         )
-        pf_upper_values = pf_upper_values.round(decimals=2)
 
         pf_lower_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-lower")
             / 1000
         )
+
+        if units == "metric":
+            pf_values = pf_values * 25.4
+            pf_upper_values = pf_upper_values * 25.4
+            pf_lower_values = pf_lower_values * 25.4
+
+        pf_values = pf_values.round(decimals=2)
+        pf_upper_values = pf_upper_values.round(decimals=2)
         pf_lower_values = pf_lower_values.round(decimals=2)
 
         row = []
@@ -74,14 +80,15 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
                 )
             )
         )
-        for i in range(len(pf_values)):
+        # for i in range(len(pf_values)):
+        for interval in [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]:
             row.append(
                 html.Td(
                     ddsih.DangerouslySetInnerHTML(
                         f"""
-                <p align="center"><b>{pf_values.values[i]}</b></p>
-                <p align="center">( <i>{pf_lower_values.values[i]} - {pf_upper_values.values[i]}</i> )</p>
-                """
+                <p align="center"><b>{pf_values.sel(interval=interval).values}</b></p>
+                <p align="center">( <i>{pf_lower_values.sel(interval=interval).values} - {pf_upper_values.sel(interval=interval).values}</i> )</p>
+                        """
                     )
                 )
             )
@@ -93,7 +100,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
     return pf_data_table
 
 
-def generate_table(dt, ts_str):
+def generate_table(dt, ts_str, units):
     return [
         html.H3("GFDL-CM3"),
         html.Table(
@@ -122,7 +129,7 @@ def generate_table(dt, ts_str):
                         for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
-                html.Tbody(generate_table_data(dt, "GFDL-CM3", ts_str)),
+                html.Tbody(generate_table_data(dt, "GFDL-CM3", ts_str, units)),
             ],
         ),
         html.H3("NCAR-CCSM4"),
@@ -152,7 +159,7 @@ def generate_table(dt, ts_str):
                         for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
-                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", ts_str)),
+                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", ts_str, units)),
             ],
         ),
     ]
@@ -182,9 +189,13 @@ def chnage_lat(click_lat_lng):
 
 @app.callback(
     Output("pf-data-tables", "children"),
-    [Input("ak-map", "click_lat_lng"), Input("timeslice-dropdown", "value")],
+    [
+        Input("ak-map", "click_lat_lng"),
+        Input("timeslice-dropdown", "value"),
+        Input("units-radio", "value"),
+    ],
 )
-def return_pf_data(click_lat_lng, ts_str):
+def return_pf_data(click_lat_lng, ts_str, units):
     wgs84 = pyproj.CRS("EPSG:4326")
     epsg3338 = pyproj.CRS("EPSG:3338")
     nad83_lat_lon = pyproj.transform(
@@ -194,7 +205,8 @@ def return_pf_data(click_lat_lng, ts_str):
     print(nad83_lat_lon)
     pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
     print(pf_data)
-    return generate_table(pf_data, ts_str)
+    table = generate_table(pf_data, ts_str, units)
+    return table
 
 
 if __name__ == "__main__":
