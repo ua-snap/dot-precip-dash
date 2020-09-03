@@ -111,6 +111,8 @@ alaska_map = wrap_in_section(
             ],
             value="2020-2049",
         ),
+        dcc.Input(id="lat-input", type="number", placeholder="Enter latitude"),
+        dcc.Input(id="lon-input", type="number", placeholder="Enter longitude"),
         dcc.Loading(
             id="loading-1",
             children=[html.Div(id="pf-data-tables", className="tabContent")],

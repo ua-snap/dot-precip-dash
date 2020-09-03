@@ -65,7 +65,14 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
         pf_lower_values = pf_lower_values.round(decimals=2)
 
         row = []
-        row.append(html.Th(duration))
+        row.append(
+            html.Th(
+                ddsih.DangerouslySetInnerHTML(
+                    f"""
+                <p align="center">{duration}</p>"""
+                )
+            )
+        )
         for i in range(len(pf_values)):
             row.append(
                 html.Td(
@@ -95,12 +102,23 @@ def generate_table(dt, ts_str):
                 html.Tr(
                     children=[
                         html.Th("Duration", rowSpan=2,),
-                        html.Th("Average recurrence interval(years)", colSpan=9,),
+                        html.Th(
+                            ddsih.DangerouslySetInnerHTML(
+                                f"""
+                <p align="center"><b>Average recurrence interval(years)</b></p>"""
+                            ),
+                            colSpan=9,
+                        ),
                     ]
                 ),
                 html.Tr(
                     children=[
-                        html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                        html.Th(
+                            ddsih.DangerouslySetInnerHTML(
+                                f"""<p align="center">{col}</p>"""
+                            )
+                        )
+                        for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
                 html.Tbody(generate_table_data(dt, "GFDL-CM3", ts_str)),
@@ -114,12 +132,23 @@ def generate_table(dt, ts_str):
                 html.Tr(
                     children=[
                         html.Th("Duration", rowSpan=2,),
-                        html.Th("Average recurrence interval(years)", colSpan=9,),
+                        html.Th(
+                            ddsih.DangerouslySetInnerHTML(
+                                f"""
+                <p align="center"><b>Average recurrence interval(years)</b></p>"""
+                            ),
+                            colSpan=9,
+                        ),
                     ]
                 ),
                 html.Tr(
                     children=[
-                        html.Th(col) for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+                        html.Th(
+                            ddsih.DangerouslySetInnerHTML(
+                                f"""<p align="center">{col}</p>"""
+                            )
+                        )
+                        for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
                     ]
                 ),
                 html.Tbody(generate_table_data(dt, "NCAR-CCSM4", ts_str)),
@@ -138,6 +167,18 @@ def drop_pin_on_map(click_lat_lng):
             children=dl.Tooltip("({:.2f}, {:.2f})".format(*click_lat_lng)),
         )
     ]
+
+
+@app.callback(Output("lat-input", "value"), [Input("ak-map", "click_lat_lng")])
+def chnage_lat(click_lat_lng):
+    print("Guess what?")
+    return click_lat_lng[0]
+
+
+@app.callback(Output("lon-input", "value"), [Input("ak-map", "click_lat_lng")])
+def chnage_lat(click_lat_lng):
+    print("Guess what lon?")
+    return click_lat_lng[1]
 
 
 @app.callback(
