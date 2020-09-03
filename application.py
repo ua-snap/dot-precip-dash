@@ -47,6 +47,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049"):
         "45d",
         "60d",
     ]:
+        # All of the PF values are in 1000th of an inch
         pf_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
         )

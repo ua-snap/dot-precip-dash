@@ -42,8 +42,8 @@ header = ddsih.DangerouslySetInnerHTML(
 <nav class="navbar" role="navigation" aria-label="main navigation">
 
   <div class="navbar-brand">
-    <a class="navbar-item" href="https://uaf-accap.org">
-      <img src="{path_prefix}assets/ACCAP_wide.svg">
+    <a class="navbar-item" href="https://uaf-snap.org">
+      <img src="{path_prefix}assets/snap_acronym.svg">
     </a>
 
     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -212,4 +212,4 @@ footer = html.Footer(
     ],
 )
 
-layout = html.Div(children=[header, about, alaska_map, tool_info, footer])
+layout = html.Div(children=[header, alaska_map, footer])
