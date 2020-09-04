@@ -31,22 +31,7 @@ app.layout = layout
 
 def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"):
     pf_data_table = []
-    for duration in [
-        "60m",
-        "2h",
-        "3h",
-        "6h",
-        "12h",
-        "24h",
-        "3d",
-        "4d",
-        "7d",
-        "10d",
-        "20d",
-        "30d",
-        "45d",
-        "60d",
-    ]:
+    for duration in luts.DURATIONS:
         # All of the PF values are in 1000th of an inch
         pf_values = (
             dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf") / 1000
@@ -80,7 +65,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
                 )
             )
         )
-        for interval in [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]:
+        for interval in luts.INTERVALS:
             row.append(
                 html.Td(
                     ddsih.DangerouslySetInnerHTML(
@@ -91,8 +76,6 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
                     )
                 )
             )
-            # for value in pf_values.values:
-            #    row.append(html.Td(value))
 
         pf_data_table.append(html.Tr(row))
 
@@ -100,68 +83,49 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
 
 
 def generate_table(dt, ts_str, units):
-    return [
-        html.H3("GFDL-CM3"),
-        html.Table(
-            id="gfdl-pf-table",
-            className="table is-bordered",
-            children=[
-                html.Tr(
-                    children=[
-                        html.Th("Duration", rowSpan=2,),
+    table = []
+    for gcm in dt.coords["gcm"].values:
+        table.append(
+            html.Table(
+                id=f"""{gcm}-pf-table""",
+                className="table is-bordered",
+                children=[
+                    html.Tr(
                         html.Th(
                             ddsih.DangerouslySetInnerHTML(
-                                f"""
-                <p align="center"><b>Average recurrence interval(years)</b></p>"""
+                                f"""<p align="center">Data for model {gcm} for time range {ts_str} in {"millimeters" if units == "metric" else "inches"}</p>"""
                             ),
-                            colSpan=9,
+                            colSpan=11,
                         ),
-                    ]
-                ),
-                html.Tr(
-                    children=[
-                        html.Th(
-                            ddsih.DangerouslySetInnerHTML(
-                                f"""<p align="center">{col}</p>"""
-                            )
-                        )
-                        for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-                    ]
-                ),
-                html.Tbody(generate_table_data(dt, "GFDL-CM3", ts_str, units)),
-            ],
-        ),
-        html.H3("NCAR-CCSM4"),
-        html.Table(
-            id="ncar-pf-table",
-            className="table is-bordered",
-            children=[
-                html.Tr(
-                    children=[
-                        html.Th("Duration", rowSpan=2,),
-                        html.Th(
-                            ddsih.DangerouslySetInnerHTML(
-                                f"""
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Th("Duration", rowSpan=2,),
+                            html.Th(
+                                ddsih.DangerouslySetInnerHTML(
+                                    f"""
                 <p align="center"><b>Average recurrence interval(years)</b></p>"""
+                                ),
+                                colSpan=9,
                             ),
-                            colSpan=9,
-                        ),
-                    ]
-                ),
-                html.Tr(
-                    children=[
-                        html.Th(
-                            ddsih.DangerouslySetInnerHTML(
-                                f"""<p align="center">{col}</p>"""
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Th(
+                                ddsih.DangerouslySetInnerHTML(
+                                    f"""<p align="center">{int(col)}</p>"""
+                                )
                             )
-                        )
-                        for col in [2, 5, 10, 25, 50, 100, 200, 500, 1000]
-                    ]
-                ),
-                html.Tbody(generate_table_data(dt, "NCAR-CCSM4", ts_str, units)),
-            ],
-        ),
-    ]
+                            for col in luts.INTERVALS
+                        ]
+                    ),
+                    html.Tbody(generate_table_data(dt, gcm, ts_str, units)),
+                ],
+            ),
+        )
+
+    return table
 
 
 @app.callback(Output("layer", "children"), [Input("ak-map", "click_lat_lng")])

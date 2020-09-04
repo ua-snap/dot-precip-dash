@@ -68,6 +68,25 @@ index_string = f"""
 </html>
 """
 
+DURATIONS = [
+    "60m",
+    "2h",
+    "3h",
+    "6h",
+    "12h",
+    "24h",
+    "3d",
+    "4d",
+    "7d",
+    "10d",
+    "20d",
+    "30d",
+    "45d",
+    "60d",
+]
+
+INTERVALS = [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]
+
 # Plotly format template
 plotly_template = pio.templates["simple_white"]
 axis_configs = {
