@@ -112,9 +112,10 @@ alaska_map = html.Div(
         [dl.TileLayer(), dl.LayerGroup(id="layer")],
         id="ak-map",
         zoom=4,
-        center=(62.5, -155),
+        center=(62.5, -160),
         minZoom=4,
         maxZoom=8,
+        maxBounds=[[47.87, -194.72], [72.29, -125.20]],
         style={"width": "800px", "height": "600px"},
     )
 )
