@@ -46,9 +46,8 @@ section.graph {
 	fill: #ccc;
 }
 
-/* Fix heights of charts */
-#daily-index {
-	height: 600px;
+.dash-dropdown {
+	max-width: 10rem;
 }
 
 #cache_check_input {

@@ -36,6 +36,20 @@ def wrap_in_section(content, section_classes="", container_classes="", div_class
     )
 
 
+def wrap_in_field(label, control, className=""):
+    """
+    Returns the control wrapped
+    in Bulma-friendly markup.
+    """
+    return html.Div(
+        className="field " + className,
+        children=[
+            html.Label(label, className="label"),
+            html.Div(className="control", children=control),
+        ],
+    )
+
+
 header = ddsih.DangerouslySetInnerHTML(
     f"""
 <div class="container">
@@ -93,43 +107,74 @@ a simple indicator that balances accessible information on temperature variation
 )
 
 
-alaska_map = wrap_in_section(
-    [
-        dl.Map(
-            [dl.TileLayer(), dl.LayerGroup(id="layer")],
-            id="ak-map",
-            zoom=4,
-            center=(62.5, -155),
-            minZoom=4,
-            maxZoom=8,
-            style={"width": "800px", "height": "600px"},
+alaska_map = html.Div(
+    dl.Map(
+        [dl.TileLayer(), dl.LayerGroup(id="layer")],
+        id="ak-map",
+        zoom=4,
+        center=(62.5, -155),
+        minZoom=4,
+        maxZoom=8,
+        style={"width": "800px", "height": "600px"},
+    )
+)
+timerange_dropdown = wrap_in_field(
+    "Choose timerange for returned data",
+    dcc.Dropdown(
+        id="timeslice-dropdown",
+        options=[
+            {"label": "2020-2049", "value": "2020-2049"},
+            {"label": "2050-2079", "value": "2050-2079"},
+            {"label": "2080-2099", "value": "2080-2099"},
+        ],
+        value="2020-2049",
+    ),
+)
+lat_lon_inputs = html.Div(
+    children=[
+        wrap_in_field(
+            "Latitude",
+            dcc.Input(id="lat-input", type="number", placeholder="Enter latitude"),
         ),
-        dcc.Dropdown(
-            id="timeslice-dropdown",
-            options=[
-                {"label": "2020-2049", "value": "2020-2049"},
-                {"label": "2050-2079", "value": "2050-2079"},
-                {"label": "2080-2099", "value": "2080-2099"},
-            ],
-            value="2020-2049",
-        ),
-        dcc.Input(id="lat-input", type="number", placeholder="Enter latitude"),
-        dcc.Input(id="lon-input", type="number", placeholder="Enter longitude"),
-        dcc.RadioItems(
-            id="units-radio",
-            options=[
-                {"label": "Imperial Units", "value": "imperial"},
-                {"label": "Metric Units", "value": "metric"},
-            ],
-            value="imperial",
-        ),
-        dcc.Loading(
-            id="loading-1",
-            children=[html.Div(id="pf-data-tables", className="tabContent")],
-            type="circle",
-            className="loading-circle",
+        wrap_in_field(
+            "Longitude",
+            dcc.Input(id="lon-input", type="number", placeholder="Enter longitude"),
         ),
     ]
+)
+units_radio = wrap_in_field(
+    "Choose returned units",
+    dcc.RadioItems(
+        id="units-radio",
+        options=[
+            {"label": "Imperial Units", "value": "imperial"},
+            {"label": "Metric Units", "value": "metric"},
+        ],
+        value="imperial",
+    ),
+)
+
+data_table = wrap_in_section(
+    dcc.Loading(
+        id="loading-1",
+        children=[html.Div(id="pf-data-tables", className="tabContent")],
+        type="circle",
+        className="loading-circle",
+    )
+)
+
+left_column = [html.H5("Choose a point on the Alaska map"), alaska_map]
+
+right_column = [timerange_dropdown, lat_lon_inputs, units_radio]
+
+main_section = wrap_in_section(
+    html.Div(
+        className="columns",
+        children=[
+            html.Div(className="column", children=left_column),
+            html.Div(className="column", children=right_column),
+        ],
+    )
 )
 
 
@@ -222,4 +267,4 @@ footer = html.Footer(
     ],
 )
 
-layout = html.Div(children=[header, alaska_map, footer])
+layout = html.Div(children=[header, main_section, data_table, footer])
