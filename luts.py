@@ -7,12 +7,10 @@ import os
 import plotly.io as pio
 
 # Core page components
-title = "Alaska Statewide Temperature Index"
-url = "http://accap.uaf.edu/tools/statewide-temperature-index"
-preview = "http://accap.uaf.edu/tools/statewide-temperature-index/assets/preview.png"
-description = (
-    "See if it's unusually hot or cold relative to historical normals for Alaska."
-)
+title = "DOT Precipitation GUI"
+url = "https://snap.uaf.edu"
+preview = "http://snap.uaf.edu/assets/preview.png"
+description = "Check precipitation frequency forecast data for any part of Alaska."
 gtag_id = os.getenv("GTAG_ID", default="")
 index_string = f"""
 <!DOCTYPE html>

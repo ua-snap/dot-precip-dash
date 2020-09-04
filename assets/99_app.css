@@ -46,12 +46,20 @@ section.graph {
 	fill: #ccc;
 }
 
+.field.timerange {
+    padding-top: 18px;
+}
+
+.field.units {
+    padding-top: 15px;
+}
+
 .dash-dropdown {
 	max-width: 10rem;
 }
 
-#cache_check_input {
-    display: none;
+.label_spacing {
+    padding-right: 10px;
 }
 
 .footer {

@@ -80,7 +80,6 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
                 )
             )
         )
-        # for i in range(len(pf_values)):
         for interval in [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]:
             row.append(
                 html.Td(

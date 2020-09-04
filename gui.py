@@ -129,6 +129,7 @@ timerange_dropdown = wrap_in_field(
         ],
         value="2020-2049",
     ),
+    className="timerange",
 )
 lat_lon_inputs = html.Div(
     children=[
@@ -151,7 +152,9 @@ units_radio = wrap_in_field(
             {"label": "Metric Units", "value": "metric"},
         ],
         value="imperial",
+        labelClassName="label_spacing",
     ),
+    className="units",
 )
 
 data_table = wrap_in_section(
@@ -163,7 +166,7 @@ data_table = wrap_in_section(
     )
 )
 
-left_column = [html.H5("Choose a point on the Alaska map"), alaska_map]
+left_column = [html.H5("Choose a point on the map of Alaska"), alaska_map]
 
 right_column = [timerange_dropdown, lat_lon_inputs, units_radio]
 
