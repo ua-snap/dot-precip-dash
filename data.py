@@ -6,14 +6,7 @@ and caching community data.
 
 import urllib.parse
 import os
-import datetime
 import logging
-import numpy as np
-import xarray as xr
-import pandas as pd
-from beaker.cache import CacheManager
-from beaker.util import parse_cache_config_options
-import scipy.stats
 import pickle
 
 DASH_LOG_LEVEL = os.getenv("DASH_LOG_LEVEL", default="info")

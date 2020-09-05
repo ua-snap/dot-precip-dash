@@ -3,14 +3,10 @@
 Template for SNAP Dash apps.
 """
 import os
-import datetime
 import dash
-import dash_core_components as dcc
 import dash_html_components as html
 import dash_dangerously_set_inner_html as ddsih
 from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-import flask
 from gui import layout, path_prefix
 from data import fetch_data
 import dash_leaflet as dl
