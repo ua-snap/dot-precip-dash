@@ -24,6 +24,8 @@ app.index_string = luts.index_string
 app.title = luts.title
 app.layout = layout
 
+past_points = []
+
 
 def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"):
     pf_data_table = []
@@ -155,6 +157,9 @@ def chnage_lat(click_lat_lng):
     ],
 )
 def return_pf_data(click_lat_lng, ts_str, units):
+    for point in past_points:
+        if point[0] == click_lat_lng[0] and point[1] == click_lat_lng[1]:
+            return generate_table(point[2], ts_str, units)
     wgs84 = pyproj.CRS("EPSG:4326")
     epsg3338 = pyproj.CRS("EPSG:3338")
     nad83_lat_lon = pyproj.transform(
@@ -163,9 +168,9 @@ def return_pf_data(click_lat_lng, ts_str, units):
     print(ts_str)
     print(nad83_lat_lon)
     pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
+    past_points.append([click_lat_lng[0], click_lat_lng[1], pf_data])
     print(pf_data)
-    table = generate_table(pf_data, ts_str, units)
-    return table
+    return generate_table(pf_data, ts_str, units)
 
 
 if __name__ == "__main__":
