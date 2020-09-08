@@ -36,14 +36,10 @@ section.graph {
 	font-size: 120%;
 }
 
-.camera-icon span {
-	display: inline-block;
-	position: relative;
-	top: 0.25rem;
-	padding: 0 3px;
-}
-.camera-icon span path {
-	fill: #ccc;
+.lat_lon_div {
+    margin-top: 35px;
+    border: ridge;
+    max-width: 160px;
 }
 
 .field.timerange {

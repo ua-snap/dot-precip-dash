@@ -1,17 +1,19 @@
-# pylint: disable=C0103,C0301,E0401
+# pylint: disable=C0103,C0301,E0401,R0913,W0603
 """
 Template for SNAP Dash apps.
 """
 import os
+import logging
 import dash
 import dash_html_components as html
 import dash_dangerously_set_inner_html as ddsih
-from dash.dependencies import Input, Output
-from gui import layout, path_prefix
-from data import fetch_data
+from dash.dependencies import Input, Output, State
 import dash_leaflet as dl
 import pyproj
+from gui import layout, path_prefix
+from data import fetch_api_data, DASH_LOG_LEVEL
 import luts
+
 
 app = dash.Dash(
     __name__, requests_pathname_prefix=path_prefix, prevent_initial_callbacks=True
@@ -24,10 +26,28 @@ app.index_string = luts.index_string
 app.title = luts.title
 app.layout = layout
 
+logging.basicConfig(level=getattr(logging, DASH_LOG_LEVEL.upper(), logging.INFO))
+
+# Global counts for number of clicks to allow for both map click and lat / lon input
+pin_num_clicks = 0
+table_num_clicks = 0
+
+# A list of lists containing past lat / lon combinations + associated data array
 past_points = []
 
 
 def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"):
+    """
+    Generates table formatted data from 5-D XArray of PF values to be displayed in the generated table.
+    Accepts the following input:
+        * dt - The XArray DataArray containing the data returned from the NC files via API call.
+        * gcm - String of the global climate model (GCM) desired: GFDL-CM3 or NCAR-CCSM4
+        * ts_str - String of the time interval desired: 2020-2049, 2050-2079, or 2080-2099
+        * units - String of the units desired: imperial (inches) or metric (mm)
+
+    Returns:
+        * Rows <tr> and columns <td> to populate a table containing data from our input.
+    """
     pf_data_table = []
     for duration in luts.DURATIONS:
         # All of the PF values are in 1000th of an inch
@@ -81,6 +101,16 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
 
 
 def generate_table(dt, ts_str, units):
+    """
+    Initializes the data table to be displayed from the 5-D XArray input.
+    Accepts the following input:
+        * dt - The XArray DataArray containing the data returned from the NC files via API call.
+        * ts_str - String of the time interval desired: 2020-2049, 2050-2079, or 2080-2099
+        * units - String of the units desired: imperial (inches) or metric (mm)
+    Returns:
+         * A formatted table containing both GCMs output for a given lat / lon at a given time range
+           and in units requested.
+    """
     table = []
     for gcm in dt.coords["gcm"].values:
         table.append(
@@ -101,8 +131,7 @@ def generate_table(dt, ts_str, units):
                             html.Th("Duration", rowSpan=2,),
                             html.Th(
                                 ddsih.DangerouslySetInnerHTML(
-                                    f"""
-                <p align="center"><b>Average recurrence interval(years)</b></p>"""
+                                    "<p align='center'><b>Average recurrence interval(years)</b></p>"
                                 ),
                                 colSpan=9,
                             ),
@@ -126,9 +155,34 @@ def generate_table(dt, ts_str, units):
     return table
 
 
-@app.callback(Output("layer", "children"), [Input("ak-map", "click_lat_lng")])
-def drop_pin_on_map(click_lat_lng):
-    print(click_lat_lng)
+@app.callback(
+    Output("layer", "children"),
+    [Input("ak-map", "click_lat_lng"), Input("submit-lat-lon", "n_clicks")],
+    [State("lat-input", "value"), State("lon-input", "value")],
+)
+def drop_pin_on_map(click_lat_lng, n_clicks, lat, lon):
+    """
+    Places a pin on the map of Alaska given either a click on the map OR
+    by entering a lat / lon set and hitting the Submit button.
+    Inputs:
+        * click_lat_lng - Only generated upon a click on the map. Produces a tuple of (lat, lon)
+        * n_clicks - Number of clicks of the Submit button. Updates +1 per click. This allows us to track button clicks.
+    States:
+        * lat - Only generated when Submit button is pressed. Value is latitude entered into lat-input Input field.
+        * lon - Only generated when Submit button is pressed. Value is longitude entered into lon-input Input field.
+    Returns:
+        * A new marker on the map of Alaska for where was pressed or representing the lat / lon input.
+    """
+    global pin_num_clicks
+    if n_clicks != pin_num_clicks:
+
+        pin_num_clicks = n_clicks
+        return [
+            dl.Marker(
+                position=(lat, lon),
+                children=dl.Tooltip("({:.2f}, {:.2f})".format(lat, lon)),
+            )
+        ]
 
     return [
         dl.Marker(
@@ -140,11 +194,25 @@ def drop_pin_on_map(click_lat_lng):
 
 @app.callback(Output("lat-input", "value"), [Input("ak-map", "click_lat_lng")])
 def change_lat(click_lat_lng):
+    """
+    Changes the Input lat-input's value to match the latitude of the clicked point.
+    Inputs:
+        * click_lat_lng - The latitude and longitude of a clicked place on map of Alaska in tuple (lat, lon)
+    Returns:
+        * Latitude value rounded to 2 decimal places.
+    """
     return round(click_lat_lng[0], 2)
 
 
 @app.callback(Output("lon-input", "value"), [Input("ak-map", "click_lat_lng")])
-def chnage_lat(click_lat_lng):
+def change_lon(click_lat_lng):
+    """
+    Changes the Input lon-input's value to match the longitude of the clicked point.
+    Inputs:
+        * click_lat_lng - The latitude and longitude of a clicked place on map of Alaska in tuple (lat, lon)
+    Returns:
+        * Longitude value rounded to 2 decimal places.
+    """
     return round(click_lat_lng[1], 2)
 
 
@@ -152,26 +220,64 @@ def chnage_lat(click_lat_lng):
     Output("pf-data-tables", "children"),
     [
         Input("ak-map", "click_lat_lng"),
+        Input("submit-lat-lon", "n_clicks"),
         Input("timeslice-dropdown", "value"),
         Input("units-radio", "value"),
     ],
+    [State("lat-input", "value"), State("lon-input", "value")],
 )
-def return_pf_data(click_lat_lng, ts_str, units):
-    for point in past_points:
-        if point[0] == click_lat_lng[0] and point[1] == click_lat_lng[1]:
-            return generate_table(point[2], ts_str, units)
+def return_pf_data(click_lat_lng, n_clicks, ts_str, units, lat, lon):
+    """
+    Main function for generating the PF tables given all of the available inputs from the web application.
+    Inputs:
+        * click_lat_lng - Only generated upon a click on the map. Produces a tuple of (lat, lon)
+        * n_clicks - Number of clicks of the Submit button. Updates +1 per click. This allows us to track button clicks.
+    States:
+        * lat - Only generated when Submit button is pressed. Value is latitude entered into lat-input Input field.
+        * lon - Only generated when Submit button is pressed. Value is longitude entered into lon-input Input field.
+    Returns:
+        * A formatted table containing both GCMs output for a given lat / lon at a given time range
+           and in units requested.
+    """
+    global table_num_clicks
+
     wgs84 = pyproj.CRS("EPSG:4326")
     epsg3338 = pyproj.CRS("EPSG:3338")
-    nad83_lat_lon = pyproj.transform(
-        wgs84, epsg3338, click_lat_lng[0], click_lat_lng[1]
-    )
-    print(ts_str)
-    print(nad83_lat_lon)
-    pf_data = fetch_data(nad83_lat_lon[0], nad83_lat_lon[1])
-    past_points.append([click_lat_lng[0], click_lat_lng[1], pf_data])
-    print(pf_data)
+
+    if n_clicks != table_num_clicks:
+        table_num_clicks = n_clicks
+
+        for point in past_points:
+            if point[0] == lat and point[1] == lon:
+                logging.info(
+                    "Using cached data for latitude %s and longitude %s", lat, lon
+                )
+                return generate_table(point[2], ts_str, units)
+
+        nad83_lat_lon = pyproj.transform(wgs84, epsg3338, lat, lon)
+
+        # Change to fetch_api_data and delete fetch_data when ready
+        pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
+        past_points.append([lat, lon, pf_data])
+
+    else:
+        click_lat = round(click_lat_lng[0], 2)
+        click_lon = round(click_lat_lng[1], 2)
+        for point in past_points:
+            if point[0] == click_lat and point[1] == click_lon:
+                logging.info(
+                    "Using cached data for latitude %s and longitude %s", lat, lon
+                )
+                return generate_table(point[2], ts_str, units)
+
+        nad83_lat_lon = pyproj.transform(wgs84, epsg3338, click_lat, click_lon)
+
+        # Change to fetch_api_data and delete fetch_data when ready
+        pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
+        past_points.append([click_lat, click_lon, pf_data])
+
     return generate_table(pf_data, ts_str, units)
 
 
 if __name__ == "__main__":
-    application.run(debug=os.getenv("FLASK_DEBUG", default=False), port=8080)
+    application.run(debug=os.getenv("FLASK_DEBUG") or False, port=8080)

@@ -1,4 +1,4 @@
-# pylint: disable=C0103
+# pylint: disable=C0103,E0401
 """
 Common shared text strings, formatting defaults and lookup tables.
 """
@@ -89,47 +89,3 @@ INTERVALS = [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]
 
 # Plotly format template
 plotly_template = pio.templates["simple_white"]
-axis_configs = {
-    "automargin": True,
-    "showgrid": False,
-    "showline": False,
-    "ticks": "",
-    "title": {"standoff": 0},
-    "zeroline": False,
-    "fixedrange": True,
-}
-xaxis_config = {**axis_configs, **{"tickformat": "%B %-d, %Y"}}
-plotly_template.layout.xaxis = xaxis_config
-plotly_template.layout.yaxis = axis_configs
-
-# Used to make the chart exports nice
-fig_download_configs = dict(
-    filename="Statewide_Temperature_Index", width="1000", height="650", scale=2
-)
-fig_configs = dict(
-    displayModeBar=True,
-    showSendToCloud=False,
-    toImageButtonOptions=fig_download_configs,
-    modeBarButtonsToRemove=[
-        "zoom2d",
-        "pan2d",
-        "select2d",
-        "lasso2d",
-        "zoomIn2d",
-        "zoomOut2d",
-        "autoScale2d",
-        "resetScale2d",
-        "hoverClosestCartesian",
-        "hoverCompareCartesian",
-        "hoverClosestPie",
-        "hoverClosest3d",
-        "hoverClosestGl2d",
-        "hoverClosestGeo",
-        "toggleHover",
-        "toggleSpikelines",
-    ],
-    displaylogo=False,
-)
-
-# Colors to reference
-colors = ["#405bfe", "#ff3d00"]  # cold  # hot
