@@ -256,7 +256,6 @@ def return_pf_data(click_lat_lng, n_clicks, ts_str, units, lat, lon):
 
         nad83_lat_lon = pyproj.transform(wgs84, epsg3338, lat, lon)
 
-        # Change to fetch_api_data and delete fetch_data when ready
         pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
         past_points.append([lat, lon, pf_data])
 
@@ -272,7 +271,6 @@ def return_pf_data(click_lat_lng, n_clicks, ts_str, units, lat, lon):
 
         nad83_lat_lon = pyproj.transform(wgs84, epsg3338, click_lat, click_lon)
 
-        # Change to fetch_api_data and delete fetch_data when ready
         pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
         past_points.append([click_lat, click_lon, pf_data])
 
