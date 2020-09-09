@@ -130,9 +130,7 @@ lat_lon_inputs = html.Div(
             "Longitude",
             dcc.Input(id="lon-input", type="number", placeholder="Enter longitude"),
         ),
-        html.Button("Submit", id="submit-lat-lon", n_clicks=0),
     ],
-    className="lat_lon_div",
 )
 units_radio = wrap_in_field(
     "Choose returned units",

@@ -40,12 +40,6 @@ section.tables {
 	font-size: 120%;
 }
 
-.lat_lon_div {
-    margin-top: 35px;
-    border: ridge;
-    max-width: 160px;
-}
-
 .field.timerange {
     padding-top: 18px;
 }
