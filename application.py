@@ -131,7 +131,7 @@ def generate_table(dt, ts_str, units):
                             html.Th("Duration", rowSpan=2,),
                             html.Th(
                                 ddsih.DangerouslySetInnerHTML(
-                                    "<p align='center'><b>Average recurrence interval(years)</b></p>"
+                                    "<p align='center'><b>Average recurrence interval (years)</b></p>"
                                 ),
                                 colSpan=9,
                             ),
