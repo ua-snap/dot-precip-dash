@@ -89,7 +89,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
                     ddsih.DangerouslySetInnerHTML(
                         f"""
                 <p align="center"><b>{pf_values.sel(interval=interval).values}</b></p>
-                <p align="center">( <i>{pf_lower_values.sel(interval=interval).values} - {pf_upper_values.sel(interval=interval).values}</i> )</p>
+                <p align="center">(<i>{pf_lower_values.sel(interval=interval).values}-{pf_upper_values.sel(interval=interval).values}</i>)</p>
                         """
                     )
                 )
