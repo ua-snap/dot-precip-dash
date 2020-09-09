@@ -103,6 +103,7 @@ alaska_map = html.Div(
         minZoom=4,
         maxZoom=8,
         maxBounds=[[47.87, -194.72], [72.29, -125.20]],
+        scrollWheelZoom=False,
         style={"width": "800px", "height": "600px"},
     )
 )
