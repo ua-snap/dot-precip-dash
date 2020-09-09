@@ -151,9 +151,10 @@ data_table = wrap_in_section(
     dcc.Loading(
         id="loading-1",
         children=[html.Div(id="pf-data-tables", className="tabContent")],
-        type="circle",
-        className="loading-circle",
-    )
+        type="cube",
+        className="loading-cube",
+    ),
+    section_classes="tables",
 )
 
 left_column = [html.H5("Choose a point on the map of Alaska"), alaska_map]

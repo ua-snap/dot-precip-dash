@@ -27,11 +27,15 @@ section.lead, section.explainer {
 	background-color: #f8f8f8;
 }
 
-section.graph {
-	padding-bottom: 0;
+section.tables {
+    min-height: 400px;
 }
 
-.loading-circle::after {
+.loading-cube {
+    align-self: start;
+}
+
+.loading-cube::after {
 	content: "Loading data, hang on a moment...";
 	font-size: 120%;
 }
