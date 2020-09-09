@@ -121,7 +121,7 @@ def generate_table(dt, ts_str, units):
                     html.Tr(
                         html.Th(
                             ddsih.DangerouslySetInnerHTML(
-                                f"""<p align="center">Data for model {gcm} for time range {ts_str} in {"millimeters" if units == "metric" else "inches"}</p>"""
+                                f"""<p align="center">Modeled cumulative rainfall for model {gcm} for time range {ts_str} in {"millimeters" if units == "metric" else "inches"}</p>"""
                             ),
                             colSpan=11,
                         ),
