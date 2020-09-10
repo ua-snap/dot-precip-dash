@@ -27,6 +27,20 @@ section.lead, section.explainer {
 	background-color: #f8f8f8;
 }
 
+section.map {
+    padding: 3rem 0 1.5rem 0;
+    margin-left: 1px;
+}
+
+.container.map {
+    margin: 0;
+    max-width: 2200px;
+}
+
+.column.map {
+    flex-grow: 3;
+}
+
 section.tables {
     min-height: 400px;
 }

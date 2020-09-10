@@ -104,7 +104,7 @@ alaska_map = html.Div(
         maxZoom=8,
         maxBounds=[[47.87, -194.72], [72.29, -125.20]],
         scrollWheelZoom=False,
-        style={"width": "800px", "height": "600px"},
+        style={"width": "100%", "height": "600px"},
     )
 )
 timerange_dropdown = wrap_in_field(
@@ -164,10 +164,12 @@ main_section = wrap_in_section(
     html.Div(
         className="columns",
         children=[
-            html.Div(className="column", children=left_column),
+            html.Div(className="column map", children=left_column),
             html.Div(className="column", children=right_column),
         ],
-    )
+    ),
+    section_classes="map",
+    container_classes="map",
 )
 
 
