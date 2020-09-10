@@ -86,7 +86,13 @@ header = ddsih.DangerouslySetInnerHTML(
 about = wrap_in_section(
     [
         ddsih.DangerouslySetInnerHTML(
-            "<h1 class='title is-3'>DOT Precipitation Application</h1>"
+            f"""
+            <h1 class='title is-3'>DOT Precipitation Application</h1>
+            Explore projected precipitation events across Alaska with this tool. Select your location by clicking the 
+            map or manually entering the latitude and longitude of your point of interest to see a rainfall projection 
+            table for that point. Choose a time range (2020-2049, 2050-2079, or 2080-2099) and imperial or metric units
+            to tailor your output to match your .
+            """
         )
     ],
     section_classes="lead",
@@ -162,14 +168,24 @@ right_column = [timerange_dropdown, units_radio, lat_lon_inputs]
 
 main_section = wrap_in_section(
     html.Div(
-        className="columns",
         children=[
-            html.Div(className="column", children=left_column),
-            html.Div(className="column", children=right_column),
-        ],
+            html.Div(
+                className="columns",
+                children=[
+                    html.Div(className="column", children=left_column),
+                    html.Div(className="column", children=right_column),
+                ],
+            ),
+            html.Div(
+                ddsih.DangerouslySetInnerHTML(
+                    f"""
+            <b>NOTE:</b> Data is only available for locations with the state of Alaska.
+            """
+                )
+            ),
+        ]
     )
 )
-
 
 # Used in copyright date
 current_year = datetime.now().year
@@ -194,4 +210,4 @@ footer = html.Footer(
     ],
 )
 
-layout = html.Div(children=[header, main_section, data_table, footer])
+layout = html.Div(children=[header, about, main_section, data_table, footer])
