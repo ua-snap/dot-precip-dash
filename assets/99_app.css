@@ -31,6 +31,10 @@ section.tables {
     min-height: 400px;
 }
 
+table.table thead tr.noborder th[scope="col"] {
+	border: none;
+}
+
 .loading-cube {
     align-self: start;
 }
