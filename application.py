@@ -6,7 +6,7 @@ import os
 import logging
 import dash
 import dash_dangerously_set_inner_html as ddsih
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_leaflet as dl
 import pyproj
 from jinja2 import Template
