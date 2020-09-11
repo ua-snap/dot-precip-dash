@@ -1,13 +1,12 @@
-# DOT Precipitation Dash GUI Application 
+# DOT Precipitation Dash Application 
 
 ## Structure
 
  * `application.py` contains the main app loop code.
  * `gui.py` has most user interface elements.
- * `data.py` has data manipulation / fetch code.
+ * `data.py` has data fetch code.
  * `luts.py` has shared code & lookup tables and other configuration.
  * `assets/` has images and CSS (uses [Bulma](https://bulma.io))
- * `data/` has testing and other source datasets
 
 ## Local development
 
@@ -25,8 +24,7 @@ The project is run through Flask and will be available at [http://localhost:5000
 Other env vars that can be set:
 
  * `DASH_LOG_LEVEL` - sets level of logger, default INFO
- * `ACIS_API_URL` - Has sane default (https://data.rcc-acis.org/StnData?)
- * `DASH_CACHE_EXPIRE` - Has sane default (1 day), override if testing cache behavior.
+ * `API_URL` - Has default (http://apollo.snap.uaf.edu:3000/api/percentiles)
 
 ## Deploying to AWS Elastic Beanstalk:
 

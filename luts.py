@@ -1,4 +1,4 @@
-# pylint: disable=C0103
+# pylint: disable=C0103,E0401
 """
 Common shared text strings, formatting defaults and lookup tables.
 """
@@ -7,12 +7,10 @@ import os
 import plotly.io as pio
 
 # Core page components
-title = "Alaska Statewide Temperature Index"
-url = "http://accap.uaf.edu/tools/statewide-temperature-index"
-preview = "http://accap.uaf.edu/tools/statewide-temperature-index/assets/preview.png"
-description = (
-    "See if it's unusually hot or cold relative to historical normals for Alaska."
-)
+title = "DOT Precipitation GUI"
+url = "https://snap.uaf.edu"
+preview = "http://snap.uaf.edu/assets/preview.png"
+description = "Check precipitation frequency forecast data for any part of Alaska."
 gtag_id = os.getenv("GTAG_ID", default="")
 index_string = f"""
 <!DOCTYPE html>
@@ -70,49 +68,57 @@ index_string = f"""
 </html>
 """
 
+DURATIONS = [
+    "60m",
+    "2h",
+    "3h",
+    "6h",
+    "12h",
+    "24h",
+    "3d",
+    "4d",
+    "7d",
+    "10d",
+    "20d",
+    "30d",
+    "45d",
+    "60d",
+]
+
+INTERVALS = [2, 5, 10, 25, 50, 100, 200, 500, 1000]
+
+# Jinja template
+table_template = """
+<table class="table">
+    <caption class="title is-5">Modeled cumulative rainfall at {{ lat }}&deg;N, {{ lon }}&deg;E, {{ gcm }}, {{ ts_str }} ({{ units }})</caption>
+    <thead>
+        <tr class="noborder">
+            <th scope="col">Duration</th>
+            <th scope="col" colspan="9">Return Interval (years)</th>
+        </tr>
+        <tr>
+            <th><!-- spacer --></th>
+            {% for interval in intervals %}
+                <th scope="col">{{ interval }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for duration, row in rows.items() %}
+        <tr>
+            <th scope="row">{{ duration }}</th>
+            {% for values in row %}
+                <td>
+                    <strong>{{ values.value }}</strong>
+                    <br>
+                    <span>{{ values.lo }}&ndash;{{ values.hi }}</span>
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+"""
+
 # Plotly format template
 plotly_template = pio.templates["simple_white"]
-axis_configs = {
-    "automargin": True,
-    "showgrid": False,
-    "showline": False,
-    "ticks": "",
-    "title": {"standoff": 0},
-    "zeroline": False,
-    "fixedrange": True,
-}
-xaxis_config = {**axis_configs, **{"tickformat": "%B %-d, %Y"}}
-plotly_template.layout.xaxis = xaxis_config
-plotly_template.layout.yaxis = axis_configs
-
-# Used to make the chart exports nice
-fig_download_configs = dict(
-    filename="Statewide_Temperature_Index", width="1000", height="650", scale=2
-)
-fig_configs = dict(
-    displayModeBar=True,
-    showSendToCloud=False,
-    toImageButtonOptions=fig_download_configs,
-    modeBarButtonsToRemove=[
-        "zoom2d",
-        "pan2d",
-        "select2d",
-        "lasso2d",
-        "zoomIn2d",
-        "zoomOut2d",
-        "autoScale2d",
-        "resetScale2d",
-        "hoverClosestCartesian",
-        "hoverCompareCartesian",
-        "hoverClosestPie",
-        "hoverClosest3d",
-        "hoverClosestGl2d",
-        "hoverClosestGeo",
-        "toggleHover",
-        "toggleSpikelines",
-    ],
-    displaylogo=False,
-)
-
-# Colors to reference
-colors = ["#405bfe", "#ff3d00"]  # cold  # hot

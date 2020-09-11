@@ -14,7 +14,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content {
-	margin: 0 auto;
 	max-width: 40em;
 }
 
@@ -27,32 +26,69 @@ section.lead, section.explainer {
 	background-color: #f8f8f8;
 }
 
-section.graph {
-	padding-bottom: 0;
+table {
+	padding-bottom: 2rem;
 }
 
-.loading-circle::after {
+table.table thead tr.noborder th[scope="col"] {
+	border: none;
+}
+
+tbody td span {
+	font-size: 90%;
+	color: #666;
+}
+
+input[type="radio"] {
+	display: inline-block;
+	margin-right: 1ex;
+}
+
+.loading-cube {
+    align-self: start;
+}
+
+.loading-cube::after {
 	content: "Loading data, hang on a moment...";
 	font-size: 120%;
 }
 
-.camera-icon span {
-	display: inline-block;
-	position: relative;
-	top: 0.25rem;
-	padding: 0 3px;
-}
-.camera-icon span path {
-	fill: #ccc;
+#timeslice-dropdown {
+	padding-top: .5ex;
 }
 
-/* Fix heights of charts */
-#daily-index {
-	height: 600px;
+.label:not(:last-child) {
+	margin-bottom: 0;
 }
 
-#cache_check_input {
-    display: none;
+.label {
+	padding-top: .5rem;
+}
+
+.field.units {
+    padding-top: 15px;
+}
+
+.dash-dropdown {
+	max-width: 10rem;
+}
+
+.label_spacing {
+    padding-right: 2rem;
+}
+
+/* Min-height otherwise the loading placeholder overruns other elements */
+.tables {
+	min-height: 200px;
+}
+
+.table {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+}
+
+.leaflet-grab {
+    cursor: pointer !important;
 }
 
 .footer {
