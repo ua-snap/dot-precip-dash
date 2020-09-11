@@ -108,7 +108,7 @@ def generate_table(dt, ts_str, units, lat, lon):
                     ts_str=ts_str,
                     units="millimeters" if units == "metric" else "inches",
                     lat=lat,
-                    lon=lon
+                    lon=lon,
                 )
             )
         )
@@ -189,7 +189,7 @@ def return_pf_data(lat, lon, ts_str, units):
     for point in past_points:
         if point[0] == lat and point[1] == lon:
             logging.info("Using cached data for latitude %s and longitude %s", lat, lon)
-            return generate_table(point[2], ts_str, units)
+            return generate_table(point[2], ts_str, units, lat, lon)
 
     nad83_lat_lon = pyproj.transform(wgs84, epsg3338, lat, lon)
 
