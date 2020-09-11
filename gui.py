@@ -179,7 +179,7 @@ main_section = wrap_in_section(
             html.Div(
                 ddsih.DangerouslySetInnerHTML(
                     f"""
-            <b>NOTE:</b> Data is only available for locations with the state of Alaska.
+            <b>NOTE:</b> Data is only available for locations within the state of Alaska.
             """
                 )
             ),
