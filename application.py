@@ -77,11 +77,10 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
                 {
                     "value": pf_values.sel(interval=interval).values,
                     "lo": pf_lower_values.sel(interval=interval).values,
-                    "hi": pf_upper_values.sel(interval=interval).values
-
+                    "hi": pf_upper_values.sel(interval=interval).values,
                 }
             )
-        
+
         pf_data_table[duration] = intervals
 
     return pf_data_table
@@ -98,10 +97,21 @@ def generate_table(dt, ts_str, units):
          * A formatted table containing both GCMs output for a given lat / lon at a given time range
            and in units requested.
     """
-    template = Template(luts.table_template)
-    return ddsih.DangerouslySetInnerHTML(
-        template.render(intervals=luts.INTERVALS, rows=generate_table_data(dt, "GFDL-CM3", ts_str, units))
-    )
+    tables = []
+    for gcm in ["GFDL-CM3", "NCAR-CCSM4"]:
+        template = Template(luts.table_template)
+        tables.append(
+            ddsih.DangerouslySetInnerHTML(
+                template.render(
+                    gcm=gcm,
+                    intervals=luts.INTERVALS,
+                    rows=generate_table_data(dt, gcm, ts_str, units),
+                    ts_str=ts_str,
+                    units="millimeters" if units == "metric" else "inches",
+                )
+            )
+        )
+    return tables
 
 
 @app.callback(

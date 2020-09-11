@@ -90,7 +90,7 @@ INTERVALS = [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]
 # Jinja template
 table_template = """
 <table class="table">
-    <caption>Table title!!</caption>
+    <caption>Modeled cumulative rainfall for model {{ gcm }} for time range {{ ts_str }} in {{ units }}</caption>
     <thead>
         <tr class="noborder">
             <th scope="col">Duration</th>
