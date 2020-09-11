@@ -87,5 +87,37 @@ DURATIONS = [
 
 INTERVALS = [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]
 
+# Jinja template
+table_template = """
+<table class="table">
+    <caption>Modeled cumulative rainfall for model {{ gcm }} for time range {{ ts_str }} in {{ units }}</caption>
+    <thead>
+        <tr class="noborder">
+            <th scope="col">Duration</th>
+            <th scope="col" colspan="9">Return Interval<th>
+        </tr>
+        <tr>
+            <th><!-- spacer --></th>
+            {% for interval in intervals %}
+                <th scope="col">{{ interval }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for duration, row in rows.items() %}
+        <tr>
+            <th scope="row">{{ duration }}</th>
+            {% for values in row %}
+                <td>
+                    <p><strong>{{ values.value }}</strong></p>
+                    <span><em>({{ values.lo }}&ndash;{{ values.hi }})</em></span>
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+"""
+
 # Plotly format template
 plotly_template = pio.templates["simple_white"]

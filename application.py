@@ -10,6 +10,7 @@ import dash_dangerously_set_inner_html as ddsih
 from dash.dependencies import Input, Output, State
 import dash_leaflet as dl
 import pyproj
+from jinja2 import Template
 from gui import layout, path_prefix
 from data import fetch_api_data, DASH_LOG_LEVEL
 import luts
@@ -44,7 +45,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
     Returns:
         * Rows <tr> and columns <td> to populate a table containing data from our input.
     """
-    pf_data_table = []
+    pf_data_table = {}
     for duration in luts.DURATIONS:
         # All of the PF values are in 1000th of an inch
         pf_values = (
@@ -70,28 +71,17 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
         pf_upper_values = pf_upper_values.round(decimals=2)
         pf_lower_values = pf_lower_values.round(decimals=2)
 
-        row = []
-        row.append(
-            html.Th(
-                ddsih.DangerouslySetInnerHTML(
-                    f"""
-                <p align="center">{duration}</p>"""
-                )
-            )
-        )
+        intervals = []
         for interval in luts.INTERVALS:
-            row.append(
-                html.Td(
-                    ddsih.DangerouslySetInnerHTML(
-                        f"""
-                <p align="center"><b>{pf_values.sel(interval=interval).values}</b></p>
-                <p align="center">(<i>{pf_lower_values.sel(interval=interval).values}-{pf_upper_values.sel(interval=interval).values}</i>)</p>
-                        """
-                    )
-                )
+            intervals.append(
+                {
+                    "value": pf_values.sel(interval=interval).values,
+                    "lo": pf_lower_values.sel(interval=interval).values,
+                    "hi": pf_upper_values.sel(interval=interval).values,
+                }
             )
 
-        pf_data_table.append(html.Tr(row))
+        pf_data_table[duration] = intervals
 
     return pf_data_table
 
@@ -107,48 +97,21 @@ def generate_table(dt, ts_str, units):
          * A formatted table containing both GCMs output for a given lat / lon at a given time range
            and in units requested.
     """
-    table = []
-    for gcm in dt.coords["gcm"].values:
-        table.append(
-            html.Table(
-                id=f"""{gcm}-pf-table""",
-                className="table is-bordered",
-                children=[
-                    html.Tr(
-                        html.Th(
-                            ddsih.DangerouslySetInnerHTML(
-                                f"""<p align="center">Modeled cumulative rainfall for model {gcm} for time range {ts_str} in {"millimeters" if units == "metric" else "inches"}</p>"""
-                            ),
-                            colSpan=11,
-                        ),
-                    ),
-                    html.Tr(
-                        children=[
-                            html.Th("Duration", rowSpan=2,),
-                            html.Th(
-                                ddsih.DangerouslySetInnerHTML(
-                                    "<p align='center'><b>Average recurrence interval (years)</b></p>"
-                                ),
-                                colSpan=9,
-                            ),
-                        ]
-                    ),
-                    html.Tr(
-                        children=[
-                            html.Th(
-                                ddsih.DangerouslySetInnerHTML(
-                                    f"""<p align="center">{int(col)}</p>"""
-                                )
-                            )
-                            for col in luts.INTERVALS
-                        ]
-                    ),
-                    html.Tbody(generate_table_data(dt, gcm, ts_str, units)),
-                ],
-            ),
+    tables = []
+    for gcm in ["GFDL-CM3", "NCAR-CCSM4"]:
+        template = Template(luts.table_template)
+        tables.append(
+            ddsih.DangerouslySetInnerHTML(
+                template.render(
+                    gcm=gcm,
+                    intervals=luts.INTERVALS,
+                    rows=generate_table_data(dt, gcm, ts_str, units),
+                    ts_str=ts_str,
+                    units="millimeters" if units == "metric" else "inches",
+                )
+            )
         )
-
-    return table
+    return tables
 
 
 @app.callback(

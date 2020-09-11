@@ -31,6 +31,10 @@ section.tables {
     min-height: 400px;
 }
 
+table.table thead tr.noborder th[scope="col"] {
+	border: none;
+}
+
 .loading-cube {
     align-self: start;
 }
@@ -54,6 +58,10 @@ section.tables {
 
 .label_spacing {
     padding-right: 10px;
+}
+
+.table {
+    margin-bottom: 2rem;
 }
 
 .leaflet-grab {
