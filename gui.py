@@ -88,10 +88,10 @@ about = wrap_in_section(
         ddsih.DangerouslySetInnerHTML(
             f"""
             <h1 class='title is-3'>DOT Precipitation Application</h1>
-            Explore projected precipitation events across Alaska with this tool. Select your location by clicking the 
-            map or manually entering the latitude and longitude of your point of interest to see a rainfall projection 
-            table for that point. Choose a time range (2020-2049, 2050-2079, or 2080-2099) and imperial or metric units
-            to tailor your output to match your .
+            Explore projected maximum precipitation events across Alaska with this tool. Select your location by 
+            clicking the map or manually entering the latitude and longitude of your point of interest to see a rainfall
+            projection table for that point. Choose a time range (2020-2049, 2050-2079, or 2080-2099) and imperial or 
+            metric units to tailor your output to match your .
             """
         )
     ],
