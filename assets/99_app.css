@@ -14,7 +14,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content {
-	margin: 0 auto;
 	max-width: 40em;
 }
 
@@ -27,12 +26,22 @@ section.lead, section.explainer {
 	background-color: #f8f8f8;
 }
 
-section.tables {
-    min-height: 400px;
+table {
+	padding-bottom: 2rem;
 }
 
 table.table thead tr.noborder th[scope="col"] {
 	border: none;
+}
+
+tbody td span {
+	font-size: 90%;
+	color: #666;
+}
+
+input[type="radio"] {
+	display: inline-block;
+	margin-right: 1ex;
 }
 
 .loading-cube {
@@ -44,8 +53,16 @@ table.table thead tr.noborder th[scope="col"] {
 	font-size: 120%;
 }
 
-.field.timerange {
-    padding-top: 18px;
+#timeslice-dropdown {
+	padding-top: .5ex;
+}
+
+.label:not(:last-child) {
+	margin-bottom: 0;
+}
+
+.label {
+	padding-top: .5rem;
 }
 
 .field.units {
@@ -57,11 +74,17 @@ table.table thead tr.noborder th[scope="col"] {
 }
 
 .label_spacing {
-    padding-right: 10px;
+    padding-right: 2rem;
+}
+
+/* Min-height otherwise the loading placeholder overruns other elements */
+.tables {
+	min-height: 200px;
 }
 
 .table {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
 }
 
 .leaflet-grab {

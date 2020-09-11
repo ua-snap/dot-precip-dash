@@ -85,16 +85,16 @@ DURATIONS = [
     "60d",
 ]
 
-INTERVALS = [2.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 500.0, 1000.0]
+INTERVALS = [2, 5, 10, 25, 50, 100, 200, 500, 1000]
 
 # Jinja template
 table_template = """
 <table class="table">
-    <caption>Modeled cumulative rainfall for model {{ gcm }} for time range {{ ts_str }} in {{ units }}</caption>
+    <caption class="title is-5">Modeled cumulative rainfall at {{ lat }}&deg;N, {{ lon }}&deg;E, {{ gcm }}, {{ ts_str }} ({{ units }})</caption>
     <thead>
         <tr class="noborder">
             <th scope="col">Duration</th>
-            <th scope="col" colspan="9">Return Interval<th>
+            <th scope="col" colspan="9">Return Interval (years)</th>
         </tr>
         <tr>
             <th><!-- spacer --></th>
@@ -109,8 +109,9 @@ table_template = """
             <th scope="row">{{ duration }}</th>
             {% for values in row %}
                 <td>
-                    <p><strong>{{ values.value }}</strong></p>
-                    <span><em>({{ values.lo }}&ndash;{{ values.hi }})</em></span>
+                    <strong>{{ values.value }}</strong>
+                    <br>
+                    <span>{{ values.lo }}&ndash;{{ values.hi }}</span>
                 </td>
             {% endfor %}
         </tr>

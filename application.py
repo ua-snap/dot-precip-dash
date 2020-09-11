@@ -86,7 +86,7 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
     return pf_data_table
 
 
-def generate_table(dt, ts_str, units):
+def generate_table(dt, ts_str, units, lat, lon):
     """
     Initializes the data table to be displayed from the 5-D XArray input.
     Accepts the following input:
@@ -108,6 +108,8 @@ def generate_table(dt, ts_str, units):
                     rows=generate_table_data(dt, gcm, ts_str, units),
                     ts_str=ts_str,
                     units="millimeters" if units == "metric" else "inches",
+                    lat=lat,
+                    lon=lon
                 )
             )
         )
@@ -195,7 +197,7 @@ def return_pf_data(lat, lon, ts_str, units):
     pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
     past_points.append([lat, lon, pf_data])
 
-    return generate_table(pf_data, ts_str, units)
+    return generate_table(pf_data, ts_str, units, lat, lon)
 
 
 if __name__ == "__main__":

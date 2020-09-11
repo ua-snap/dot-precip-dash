@@ -86,12 +86,14 @@ header = ddsih.DangerouslySetInnerHTML(
 about = wrap_in_section(
     [
         ddsih.DangerouslySetInnerHTML(
-            f"""
-            <h1 class='title is-3'>DOT Precipitation Application</h1>
-            Explore projected maximum precipitation events across Alaska with this tool. Select your location by 
+            """
+            <h1 class="title is-3">DOT Precipitation Application</h1>
+            <p>Explore projected maximum precipitation events across Alaska with this tool. Select your location by 
             clicking the map or manually entering the latitude and longitude of your point of interest to see a rainfall
-            projection table for that point. Choose a time range (2020-2049, 2050-2079, or 2080-2099) and imperial or 
-            metric units to tailor your output to match your .
+            projection table for that point. Choose a time range (2020&ndash;2049, 2050&ndash;2079, or 2080&ndash;2099) and imperial or 
+            metric units to tailor your output to match your...[text TBD]</p>
+            <p>Click on the map to choose a point, or enter lat/lon values directly using the controls on the right.</p>
+            <p>Data is only available for locations within the state of Alaska.</p>
             """
         )
     ],
@@ -156,13 +158,11 @@ data_table = wrap_in_section(
     dcc.Loading(
         id="loading-1",
         children=[html.Div(id="pf-data-tables", className="tabContent")],
-        type="cube",
+        type="default",
         className="loading-cube",
     ),
     section_classes="tables",
 )
-
-left_column = [html.H5("Choose a point on the map of Alaska"), alaska_map]
 
 right_column = [timerange_dropdown, units_radio, lat_lon_inputs]
 
@@ -172,16 +172,9 @@ main_section = wrap_in_section(
             html.Div(
                 className="columns",
                 children=[
-                    html.Div(className="column", children=left_column),
+                    html.Div(className="column", children=alaska_map),
                     html.Div(className="column", children=right_column),
                 ],
-            ),
-            html.Div(
-                ddsih.DangerouslySetInnerHTML(
-                    f"""
-            <b>NOTE:</b> Data is only available for locations within the state of Alaska.
-            """
-                )
             ),
         ]
     )
