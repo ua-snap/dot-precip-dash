@@ -5,7 +5,6 @@ Template for SNAP Dash apps.
 import os
 import logging
 import dash
-import dash_html_components as html
 import dash_dangerously_set_inner_html as ddsih
 from dash.dependencies import Input, Output, State
 import dash_leaflet as dl
@@ -123,8 +122,8 @@ def drop_pin_on_map(lat, lon):
     Places a pin on the map of Alaska given either a click on the map OR
     by entering a lat / lon set and hitting the Submit button.
     Inputs:
-        * lat - Only generated when Submit button is pressed. Value is latitude entered into lat-input Input field.
-        * lon - Only generated when Submit button is pressed. Value is longitude entered into lon-input Input field.
+        * lat - Value is latitude entered into lat-input Input field.
+        * lon - Value is longitude entered into lon-input Input field.
     Returns:
         * A new marker on the map of Alaska for where was pressed or representing the lat / lon input.
     """
@@ -173,8 +172,8 @@ def return_pf_data(lat, lon, ts_str, units):
     """
     Main function for generating the PF tables given all of the available inputs from the web application.
     Inputs:
-        * lat - Only generated when Submit button is pressed. Value is latitude entered into lat-input Input field.
-        * lon - Only generated when Submit button is pressed. Value is longitude entered into lon-input Input field.
+        * lat - Value is latitude entered into lat-input Input field.
+        * lon - Value is longitude entered into lon-input Input field.
         * ts_str - - String of the time interval desired: 2020-2049, 2050-2079, or 2080-2099
         * units - String of the units desired: imperial (inches) or metric (mm)
     Returns:
