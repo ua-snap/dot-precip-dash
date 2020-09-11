@@ -56,6 +56,10 @@ section.tables {
     padding-right: 10px;
 }
 
+.leaflet-grab {
+    cursor: pointer !important;
+}
+
 .footer {
     box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.4);
     font-family: "Open Sans";
