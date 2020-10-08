@@ -95,12 +95,12 @@ table_template = """
     <thead>
         <tr class="noborder">
             <th scope="col">Duration</th>
-            <th scope="col" colspan="9">Return Interval (years)</th>
+            <th scope="col" colspan="9">Annual exceedance probability (1/years)</th>
         </tr>
         <tr>
             <th><!-- spacer --></th>
             {% for interval in intervals %}
-                <th scope="col">{{ interval }}</th>
+                <th scope="col">1/{{ interval }}</th>
             {% endfor %}
         </tr>
     </thead>
