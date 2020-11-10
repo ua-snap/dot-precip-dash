@@ -52,12 +52,12 @@ def generate_table_data(dt, gcm="GFDL-CM3", ts_str="2020-2049", units="imperial"
         )
 
         pf_upper_values = (
-            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-upper")
+            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf_upper")
             / 1000
         )
 
         pf_lower_values = (
-            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf-lower")
+            dt.sel(gcm=gcm, duration=duration, timerange=ts_str, variable="pf_lower")
             / 1000
         )
 
