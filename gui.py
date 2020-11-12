@@ -87,13 +87,9 @@ about = wrap_in_section(
     [
         ddsih.DangerouslySetInnerHTML(
             """
-            <h1 class="title is-3">DOT Precipitation Application</h1>
-            <p>Explore projected maximum precipitation events across Alaska with this tool. Select your location by
-            clicking the map or manually entering the latitude and longitude of your point of interest to see a rainfall
-            projection table for that point. Choose a time range (2020&ndash;2049, 2050&ndash;2079, or 2080&ndash;2099) and imperial or
-            metric units to tailor your output to match your...[text TBD]</p>
-            <p>Click on the map to choose a point, or enter lat/lon values directly using the controls on the right.</p>
-            <p>Data is only available for locations within the state of Alaska.</p>
+            <h1 class="title is-4">Future Projections of Precipitation for Alaska Infrastructure</h1>
+            <p>Explore projected maximum precipitation events across Alaska. Choose a location by clicking the map or 
+            manually entering the latitude and longitude to see precipitation projection tables below.</p>
             """
         )
     ],
@@ -155,16 +151,6 @@ units_radio = wrap_in_field(
     className="units",
 )
 
-data_table = wrap_in_section(
-    dcc.Loading(
-        id="loading-1",
-        children=[html.Div(id="pf-data-tables", className="tabContent")],
-        type="default",
-        className="loading-cube",
-    ),
-    section_classes="tables",
-)
-
 right_column = [timerange_dropdown, units_radio, lat_lon_inputs]
 
 main_section = wrap_in_section(
@@ -180,6 +166,71 @@ main_section = wrap_in_section(
         ]
     )
 )
+
+above_tables = html.Div(
+    id="above_tables",
+    children=[
+        ddsih.DangerouslySetInnerHTML(
+            f"""
+                <h1 class="title is-5">What am I looking at?</h1>
+                <p>Each grid cell returns the maximum expected precipitation at your selected location over the duration
+                specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
+                to per thousand years). For example for 66.55N, 149.19W a value of .5 inches is returned for the top 
+                left cell: once every two years a precipitation event of .5 inches (rain-water equivalent) over a 1 
+                hour period is expected. A 95% confidence interval is shown below the returned value.</p>
+                """
+        )
+    ],
+)
+
+below_tables = html.Div(
+    id="below_tables",
+    children=[
+        ddsih.DangerouslySetInnerHTML(
+            f"""
+                <h1 class="title is-5">About the data</h1>
+                <p>Initial inputs into the models and historical data are based on NOAA Atlas 14 data, which provide 
+                the best available historical point precipitation frequency estimates, and adjusted to account for 
+                climate change using two different Global Circulation Models. The Representative Concentration Pathway 
+                (RCP) 8.5 scenario was used for modeling projected data because it most closely matches current trends. 
+                Modeled and historical data are downscaled using delta downscaling techniques to remove model bias. 
+                Read more about SNAP’s downscaling techniques on the 
+                <a href="https://uaf-snap.org/methods-overview/downscaling/">SNAP Website's page on downscaling</a>.</p>
+                <br/>
+                """
+        ),
+        ddsih.DangerouslySetInnerHTML(
+            f"""
+                <h1 class="title is-5">About the models: GFDL-CM3 and NCAR-CCSM4</h1>
+                <p>Climate models can only estimate conditions based on the best available data, but each makes 
+                different assumptions. This tool uses two of the top-performing models, giving users a chance to 
+                explore a model that projects greater changes in temperature (GFDL model), and one that is more 
+                conservative (NCAR model). Find more information on the models chosen for this tool in the Final 
+                Report.</p>
+                <br/>
+                <p>The data produced for this project can be 
+                <a href="http://ckan.snap.uaf.edu">accessed and downloaded</a> in full through our online 
+                data portal.</p>
+                <br/>
+                """
+        ),
+    ],
+)
+
+data_table = wrap_in_section(
+    dcc.Loading(
+        id="loading-1",
+        children=[
+            above_tables,
+            html.Div(id="pf-data-tables", className="tabContent"),
+            below_tables,
+        ],
+        type="default",
+        className="loading-cube",
+    ),
+    section_classes="tables",
+)
+
 
 # Used in copyright date
 current_year = datetime.now().year
