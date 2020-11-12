@@ -7,7 +7,7 @@ import os
 import plotly.io as pio
 
 # Core page components
-title = "DOT Precipitation GUI"
+title = "Future Projections of Precipitation for Alaska Infrastructure"
 url = "https://snap.uaf.edu"
 preview = "http://snap.uaf.edu/assets/preview.png"
 description = "Check precipitation frequency forecast data for any part of Alaska."
