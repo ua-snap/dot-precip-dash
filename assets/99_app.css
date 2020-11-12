@@ -69,6 +69,18 @@ input[type="radio"] {
     padding-top: 15px;
 }
 
+.section {
+    padding: 1.5rem;
+}
+
+#above_tables {
+    display: none;
+}
+
+#below_tables {
+    display: none;
+}
+
 .dash-dropdown {
 	max-width: 10rem;
 }
@@ -83,6 +95,8 @@ input[type="radio"] {
 }
 
 .table {
+    margin-top: 3rem;
+    padding-top: 3rem;
     margin-bottom: 3rem;
     padding-bottom: 3rem;
 }

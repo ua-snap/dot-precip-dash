@@ -116,6 +116,22 @@ def generate_table(dt, ts_str, units, lat, lon):
 
 
 @app.callback(
+    Output(component_id="above_tables", component_property="style"),
+    [Input("lat-input", "value"), Input("lon-input", "value")],
+)
+def show_above_tables_text(lat, lon):
+    return {"display": "block"}
+
+
+@app.callback(
+    Output(component_id="below_tables", component_property="style"),
+    [Input("lat-input", "value"), Input("lon-input", "value")],
+)
+def show_below_tables_text(lat, lon):
+    return {"display": "block"}
+
+
+@app.callback(
     Output("layer", "children"),
     [Input("lat-input", "value"), Input("lon-input", "value")],
 )
