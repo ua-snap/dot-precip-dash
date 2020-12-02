@@ -167,6 +167,19 @@ main_section = wrap_in_section(
     )
 )
 
+nan_values = html.Div(
+    id="nan_values",
+    children=[
+        ddsih.DangerouslySetInnerHTML(
+            f"""
+                <h1 class="title is-5">Selected location is outside of this data set</h1>
+                <p>Sorry, but the place you selected isn't included in this data set. This data set is limited to the 
+                land area of the U.S. state of Alaska. Please select a valid point.</p>
+                """
+        )
+    ],
+)
+
 above_tables = html.Div(
     id="above_tables",
     children=[
@@ -221,6 +234,7 @@ data_table = wrap_in_section(
     dcc.Loading(
         id="loading-1",
         children=[
+            nan_values,
             above_tables,
             html.Div(id="pf-data-tables", className="tabContent"),
             below_tables,
