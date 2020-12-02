@@ -73,6 +73,10 @@ input[type="radio"] {
     padding: 1.5rem;
 }
 
+#nan_values {
+    display: none;
+}
+
 #above_tables {
     display: none;
 }

@@ -116,22 +116,6 @@ def generate_table(dt, ts_str, units, lat, lon):
 
 
 @app.callback(
-    Output(component_id="above_tables", component_property="style"),
-    [Input("lat-input", "value"), Input("lon-input", "value")],
-)
-def show_above_tables_text(lat, lon):
-    return {"display": "block"}
-
-
-@app.callback(
-    Output(component_id="below_tables", component_property="style"),
-    [Input("lat-input", "value"), Input("lon-input", "value")],
-)
-def show_below_tables_text(lat, lon):
-    return {"display": "block"}
-
-
-@app.callback(
     Output("layer", "children"),
     [Input("lat-input", "value"), Input("lon-input", "value")],
 )
@@ -179,6 +163,9 @@ def change_lon(click_lat_lng):
 
 @app.callback(
     Output("pf-data-tables", "children"),
+    Output(component_id="above_tables", component_property="style"),
+    Output(component_id="below_tables", component_property="style"),
+    Output(component_id="nan_values", component_property="style"),
     [
         Input("lat-input", "value"),
         Input("lon-input", "value"),
@@ -197,6 +184,9 @@ def return_pf_data(lat, lon, ts_str, units):
     Returns:
         * A formatted table containing both GCMs output for a given lat / lon at a given time range
            and in units requested.
+        * A CSS style string for the text above the data table when given valid data.
+        * A CSS style string for the text below the data table when given valid data.
+        * A CSS style string for the text given when provided all NANs / outside of AOI.
     """
 
     wgs84 = pyproj.CRS("EPSG:4326")
@@ -205,14 +195,39 @@ def return_pf_data(lat, lon, ts_str, units):
     for point in past_points:
         if point[0] == lat and point[1] == lon:
             logging.info("Using cached data for latitude %s and longitude %s", lat, lon)
-            return generate_table(point[2], ts_str, units, lat, lon)
+            if point[2][0][0][0][0][0].isnull().values:
+                return (
+                    False,
+                    {"display": "none"},
+                    {"display": "none"},
+                    {"display": "block"},
+                )
+            return (
+                generate_table(point[2], ts_str, units, lat, lon),
+                {"display": "block"},
+                {"display": "block"},
+                {"display": "none"},
+            )
 
     nad83_lat_lon = pyproj.transform(wgs84, epsg3338, lat, lon)
 
     pf_data = fetch_api_data(nad83_lat_lon[0], nad83_lat_lon[1])
     past_points.append([lat, lon, pf_data])
 
-    return generate_table(pf_data, ts_str, units, lat, lon)
+    if pf_data[0][0][0][0][0].isnull().values:
+        return (
+            False,
+            {"display": "none"},
+            {"display": "none"},
+            {"display": "block"},
+        )
+
+    return (
+        generate_table(pf_data, ts_str, units, lat, lon),
+        {"display": "block"},
+        {"display": "block"},
+        {"display": "none"},
+    )
 
 
 if __name__ == "__main__":
