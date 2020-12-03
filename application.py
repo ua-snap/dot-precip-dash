@@ -164,7 +164,6 @@ def change_lon(click_lat_lng):
 @app.callback(
     Output("pf-data-tables", "children"),
     Output(component_id="above_tables", component_property="style"),
-    Output(component_id="below_tables", component_property="style"),
     Output(component_id="nan_values", component_property="style"),
     [
         Input("lat-input", "value"),
@@ -199,12 +198,10 @@ def return_pf_data(lat, lon, ts_str, units):
                 return (
                     False,
                     {"display": "none"},
-                    {"display": "none"},
                     {"display": "block"},
                 )
             return (
                 generate_table(point[2], ts_str, units, lat, lon),
-                {"display": "block"},
                 {"display": "block"},
                 {"display": "none"},
             )
@@ -218,13 +215,11 @@ def return_pf_data(lat, lon, ts_str, units):
         return (
             False,
             {"display": "none"},
-            {"display": "none"},
             {"display": "block"},
         )
 
     return (
         generate_table(pf_data, ts_str, units, lat, lon),
-        {"display": "block"},
         {"display": "block"},
         {"display": "none"},
     )
