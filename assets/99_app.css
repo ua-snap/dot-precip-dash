@@ -22,10 +22,6 @@ nav .navbar-brand img {
 	height: 3rem;
 }
 
-section.lead, section.explainer {
-	background-color: #f8f8f8;
-}
-
 table {
 	padding-bottom: 2rem;
 }
@@ -49,7 +45,7 @@ input[type="radio"] {
 }
 
 .loading-cube::after {
-	content: "Loading data, hang on a moment...";
+	content: "Loading data, hang on a moment!<br>This could take up to 3 minutes.";
 	font-size: 120%;
 }
 
@@ -81,10 +77,6 @@ input[type="radio"] {
     display: none;
 }
 
-#below_tables {
-    display: none;
-}
-
 .dash-dropdown {
 	max-width: 10rem;
 }
@@ -107,6 +99,10 @@ input[type="radio"] {
 
 .leaflet-grab {
     cursor: pointer !important;
+}
+
+footer.footer {
+	padding-bottom: 8rem;
 }
 
 .footer {
@@ -141,4 +137,5 @@ input[type="radio"] {
 
 .footer div.wrapped {
 	flex: 1 1 auto;
+	max-width: 50rem;
 }
