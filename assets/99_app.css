@@ -45,7 +45,7 @@ input[type="radio"] {
 }
 
 .loading-cube::after {
-	content: "Loading data, hang on a moment!<br>This could take up to 3 minutes.";
+	content: "Loading data, hang on a moment! This could take up to 3 minutes.";
 	font-size: 120%;
 }
 

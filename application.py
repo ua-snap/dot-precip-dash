@@ -184,7 +184,6 @@ def return_pf_data(lat, lon, ts_str, units):
         * A formatted table containing both GCMs output for a given lat / lon at a given time range
            and in units requested.
         * A CSS style string for the text above the data table when given valid data.
-        * A CSS style string for the text below the data table when given valid data.
         * A CSS style string for the text given when provided all NANs / outside of AOI.
     """
 
