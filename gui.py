@@ -87,14 +87,14 @@ about = wrap_in_section(
     [
         ddsih.DangerouslySetInnerHTML(
             """
-            <h1 class="title is-4">Future Projections of Precipitation for Alaska Infrastructure</h1>
-            <p>Explore projected maximum precipitation events across Alaska. Choose a location by clicking the map or 
+            <h1 class="title is-3">Future Projections of Precipitation for Alaska Infrastructure</h1>
+            <p class="is-size-5">Explore projected maximum precipitation events across Alaska. Choose a location by clicking the map or 
             manually entering the latitude and longitude, then scroll down to see precipitation projection tables below.  Note: it could take up to three minutes to retrieve data for a selected point.</p>
             """
         )
     ],
-    section_classes="lead",
-    div_classes="content is-size-5",
+    section_classes="words-block-grey",
+    div_classes="content",
 )
 
 
@@ -164,15 +164,17 @@ main_section = wrap_in_section(
                 ],
             ),
         ]
-    )
+    ),
+    section_classes="roomy",
 )
 
 nan_values = html.Div(
     id="nan_values",
+    className="is-size-5",
     children=[
         ddsih.DangerouslySetInnerHTML(
             f"""
-                <h1 class="title is-5">Selected location is outside of this data set</h1>
+                <h3 class="title is-4">⚠️ Selected location is outside of this data set</h3>
                 <p>Sorry, but the place you selected isn't included in this data set. This data set is limited to the 
                 land area of the U.S. state of Alaska. Please select a valid point.</p>
                 """
@@ -182,28 +184,46 @@ nan_values = html.Div(
 
 above_tables = html.Div(
     id="above_tables",
-    className="content is-size-5",
+    className="is-size-5",
     children=[
         ddsih.DangerouslySetInnerHTML(
             f"""
-                <h1 class="title is-5">What am I looking at?</h1>
-                <p>Each table entry returns the maximum expected precipitation at your selected location over the duration
-                specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
-                to per thousand years). For example for 66.55N, 149.19W a value of .5 inches is returned for the top 
-                left cell: once every two years a precipitation event of .5 inches (rain-water equivalent) over a 1 
-                hour period is expected. A 95% confidence interval is shown below the returned value.</p>
-                """
+                    <h3 class="title is-4">What am I looking at?</h3>
+                    <p>Each table entry below returns the maximum expected precipitation at your selected location over the duration
+                    specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
+                    to per thousand years). For example for 66.55N, 149.19W a value of .5 inches is returned for the top 
+                    left cell: once every two years a precipitation event of .5 inches (rain-water equivalent) over a 1 
+                    hour period is expected. A 95% confidence interval is shown below the returned value.</p>
+            """
         )
     ],
 )
 
-below_tables = html.Div(
-    id="below_tables",
-    className="content is-size-5",
-    children=[
-        ddsih.DangerouslySetInnerHTML(
-            f"""
-                <h3 class="title is-5">About the data</h3>
+
+data_table = wrap_in_section(
+    html.Div(
+        children=[
+            dcc.Loading(
+                children=[
+                    nan_values,
+                    above_tables,
+                    html.Div(id="pf-data-tables"),
+                ],
+                type="default",
+                className="loading-cube", 
+            )
+        ],
+    ),
+    container_classes="content",
+)
+
+explainer_section = wrap_in_section(
+    html.Div(
+        className="is-size-5",
+        children=[
+            ddsih.DangerouslySetInnerHTML(
+                f"""
+                <h3 class="title is-4">About the data</h3>
                 <p>Initial inputs into the models and historical data are based on NOAA Atlas 14 data, which provide 
                 the best available historical point precipitation frequency estimates, and adjusted to account for 
                 climate change using two different Global Circulation Models. The Representative Concentration Pathway 
@@ -221,25 +241,12 @@ below_tables = html.Div(
                 moderate changes (NCAR model). Find more information on the models chosen for this tool in the Final 
                 Report, linked from <a href="https://uaf-snap.org/project/future-projections-of-precipitation-for-alaska-infrastructure/">this page describing this project</a>.</p>
                 """
-        ),
-    ],
-)
-
-data_table = wrap_in_section(
-    dcc.Loading(
-        id="loading-1",
-        children=[
-            nan_values,
-            above_tables,
-            html.Div(id="pf-data-tables", className="tabContent"),
-            below_tables,
+            )
         ],
-        type="default",
-        className="loading-cube",
     ),
-    section_classes="tables",
+    section_classes="words-block-grey",
+    container_classes="content",
 )
-
 
 # Used in copyright date
 current_year = datetime.now().year
@@ -264,4 +271,6 @@ footer = html.Footer(
     ],
 )
 
-layout = html.Div(children=[header, about, main_section, data_table, footer])
+layout = html.Div(
+    children=[header, about, main_section, data_table, explainer_section, footer]
+)

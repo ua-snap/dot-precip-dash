@@ -14,7 +14,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content {
-	max-width: 40em;
+	max-width: 50em;
+	margin: 0 auto;
 }
 
 nav .navbar-brand img {
@@ -41,7 +42,8 @@ input[type="radio"] {
 }
 
 .loading-cube {
-    align-self: start;
+	position: absolute;
+	top: -5rem;
 }
 
 .loading-cube::after {
@@ -95,6 +97,23 @@ input[type="radio"] {
     padding-top: 3rem;
     margin-bottom: 3rem;
     padding-bottom: 3rem;
+    margin-right: -6rem;
+    margin-left: -6rem;
+}
+
+#pf-data-tables table.table {
+	width: 62rem !important;
+}
+
+.words-block-grey {
+	background: #f4faff;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+.roomy {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
 }
 
 .leaflet-grab {
@@ -111,7 +130,7 @@ footer.footer {
 }
 
 .footer div.wrapper {
-	margin: 2rem auto;
+	margin: 2rem auto 0;
 	display: flex;
 	height: 8rem;
 	max-height: 8rem;
@@ -137,5 +156,4 @@ footer.footer {
 
 .footer div.wrapped {
 	flex: 1 1 auto;
-	max-width: 50rem;
 }
