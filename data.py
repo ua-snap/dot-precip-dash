@@ -12,9 +12,7 @@ import pickle
 DASH_LOG_LEVEL = os.getenv("DASH_LOG_LEVEL", default="info")
 logging.basicConfig(level=getattr(logging, DASH_LOG_LEVEL.upper(), logging.INFO))
 
-API_URL = os.getenv(
-    "API_URL", default="http://apollo.snap.uaf.edu:3000/api/percentiles"
-)
+API_URL = os.getenv("API_URL", default="http://pan.snap.uaf.edu:3000/api/percentiles")
 logging.info("Using API url %s", API_URL)
 
 
