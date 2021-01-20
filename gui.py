@@ -191,7 +191,7 @@ above_tables = html.Div(
                     <h3 class="title is-4">What am I looking at?</h3>
                     <p>Each table entry below returns the maximum expected precipitation at your selected location over the duration
                     specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
-                    to per thousand years). For example for 66.55N, 149.19W a value of .5 inches is returned for the top 
+                    to per thousand years). For example for 66.55N, 149.19W a value of 0.49 inches is returned for the top 
                     left cell: once every two years a precipitation event of .5 inches (rain-water equivalent) over a 1 
                     hour period is expected. A 95% confidence interval is shown below the returned value.</p>
             """
