@@ -232,7 +232,7 @@ explainer_section = wrap_in_section(
                 Read more about the Scenario Network for Alaska and Arctic Data (SNAP) downscaling techniques on the 
                 <a href="https://uaf-snap.org/methods-overview/downscaling/">SNAP website page on downscaling</a>.</p>
                 <p>Source code used to generate this data can be found on <a href="https://github.com/ua-snap/precip-dot">GitHub</a>, and the data produced for this project (as well as additional metadata and information about this data set) can be 
-                <a href="http://ckan.snap.uaf.edu">accessed and downloaded</a> in full through our online 
+                <a href="http://ckan.snap.uaf.edu/dataset/annual-maximum-precipitation-projections-for-alaska">accessed and downloaded</a> in full through our online 
                 data portal.</p>
                 <h3 class="title is-5">About the models: GFDL-CM3 and NCAR-CCSM4</h3>
                 <p>Climate models can only estimate conditions based on the best available data, but each makes 
