@@ -192,7 +192,7 @@ above_tables = html.Div(
                     <p>Each table entry below returns the maximum expected precipitation at your selected location over the duration
                     specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
                     to per thousand years). For example for 66.55N, 149.19W a value of 0.49 inches is returned for the top 
-                    left cell: once every two years a precipitation event of .5 inches (rain-water equivalent) over a 1 
+                    left cell: once every two years a precipitation event of 0.49 inches (rain-water equivalent) over a 1 
                     hour period is expected. A 95% confidence interval is shown below the returned value.</p>
             """
         )
@@ -228,7 +228,7 @@ explainer_section = wrap_in_section(
                 the best available historical point precipitation frequency estimates, and adjusted to account for 
                 climate change using two different Global Circulation Models. The Representative Concentration Pathway 
                 (RCP) 8.5 scenario was used for modeling projected data because it most closely matches current trends. 
-                Modeled and historical data are downscaled using delta downscaling techniques to remove model bias. 
+                This data set was developed using dynamically downscaled data from the Weather Research and Forecasting (WRF) model, and <a href="http://ckan.snap.uaf.edu/dataset/historical-and-projected-dynamically-downscaled-climate-data-for-the-state-of-alaska-and-surrou">are available here</a>. 
                 Read more about the Scenario Network for Alaska and Arctic Data (SNAP) downscaling techniques on the 
                 <a href="https://uaf-snap.org/methods-overview/downscaling/">SNAP website page on downscaling</a>.</p>
                 <p>Source code used to generate this data can be found on <a href="https://github.com/ua-snap/precip-dot">GitHub</a>, and the data produced for this project (as well as additional metadata and information about this data set) can be 
