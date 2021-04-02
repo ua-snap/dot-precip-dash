@@ -88,7 +88,7 @@ about = wrap_in_section(
         ddsih.DangerouslySetInnerHTML(
             """
             <h1 class="title is-3">Future Projections of Precipitation for Alaska Infrastructure</h1>
-            <p class="is-size-5">Explore projected maximum precipitation events across Alaska. Choose a location by clicking the map or 
+            <p class="is-size-5">Explore projected maximum precipitation events across Alaska. Choose a location by clicking the map or
             manually entering the latitude and longitude, then scroll down to see precipitation projection tables below.  Note: it could take up to three minutes to retrieve data for a selected point.</p>
             """
         )
@@ -175,7 +175,7 @@ nan_values = html.Div(
         ddsih.DangerouslySetInnerHTML(
             f"""
                 <h3 class="title is-4">⚠️ Selected location is outside of this data set</h3>
-                <p>Sorry, but the place you selected isn't included in this data set. This data set is limited to the 
+                <p>Sorry, but the place you selected isn't included in this data set. This data set is limited to the
                 land area of the U.S. state of Alaska. Please select a valid point.</p>
                 """
         )
@@ -190,9 +190,9 @@ above_tables = html.Div(
             f"""
                     <h3 class="title is-4">What am I looking at?</h3>
                     <p>Each table entry below returns the maximum expected precipitation at your selected location over the duration
-                    specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year 
-                    to per thousand years). For example for 66.55N, 149.19W a value of 0.49 inches is returned for the top 
-                    left cell: once every two years a precipitation event of 0.49 inches (rain-water equivalent) over a 1 
+                    specified for that row (60 minutes to 60 days), at a frequency specified for that column (per two year
+                    to per thousand years). For example for 66.55N, 149.19W a value of 0.49 inches is returned for the top
+                    left cell: once every two years a precipitation event of 0.49 inches (rain-water equivalent) over a 1
                     hour period is expected. A 95% confidence interval is shown below the returned value.</p>
             """
         )
@@ -210,7 +210,7 @@ data_table = wrap_in_section(
                     html.Div(id="pf-data-tables"),
                 ],
                 type="default",
-                className="loading-cube", 
+                className="loading-cube",
             )
         ],
     ),
@@ -224,21 +224,21 @@ explainer_section = wrap_in_section(
             ddsih.DangerouslySetInnerHTML(
                 f"""
                 <h3 class="title is-4">About the data</h3>
-                <p>Initial inputs into the models and historical data are based on NOAA Atlas 14 data, which provide 
-                the best available historical point precipitation frequency estimates, and adjusted to account for 
-                climate change using two different Global Circulation Models. The Representative Concentration Pathway 
-                (RCP) 8.5 scenario was used for modeling projected data because it most closely matches current trends. 
-                This data set was developed using dynamically downscaled data from the Weather Research and Forecasting (WRF) model, and <a href="http://ckan.snap.uaf.edu/dataset/historical-and-projected-dynamically-downscaled-climate-data-for-the-state-of-alaska-and-surrou">are available here</a>. 
-                Read more about the Scenario Network for Alaska and Arctic Data (SNAP) downscaling techniques on the 
+                <p>Initial inputs into the models and historical data are based on NOAA Atlas 14 data, which provide
+                the best available historical point precipitation frequency estimates, and adjusted to account for
+                climate change using two different Global Circulation Models. The Representative Concentration Pathway
+                (RCP) 8.5 scenario was used for modeling projected data because it most closely matches current trends.
+                This data set was developed using dynamically downscaled data from the Weather Research and Forecasting (WRF) model, and <a href="http://ckan.snap.uaf.edu/dataset/historical-and-projected-dynamically-downscaled-climate-data-for-the-state-of-alaska-and-surrou">are available here</a>.
+                Read more about the Scenario Network for Alaska and Arctic Data (SNAP) downscaling techniques on the
                 <a href="https://uaf-snap.org/methods-overview/downscaling/">SNAP website page on downscaling</a>.</p>
-                <p>Source code used to generate this data can be found on <a href="https://github.com/ua-snap/precip-dot">GitHub</a>, and the data produced for this project (as well as additional metadata and information about this data set) can be 
-                <a href="http://ckan.snap.uaf.edu/dataset/annual-maximum-precipitation-projections-for-alaska">accessed and downloaded</a> in full through our online 
+                <p>Source code used to generate this data can be found on <a href="https://github.com/ua-snap/precip-dot">GitHub</a>, and the data produced for this project (as well as additional metadata and information about this data set) can be
+                <a href="http://ckan.snap.uaf.edu/dataset/annual-maximum-precipitation-projections-for-alaska">accessed and downloaded</a> in full through our online
                 data portal.</p>
                 <h3 class="title is-5">About the models: GFDL-CM3 and NCAR-CCSM4</h3>
-                <p>Climate models can only estimate conditions based on the best available data, but each makes 
-                different assumptions. This tool uses two of the top-performing models, giving users a chance to 
-                explore a model that projects greater changes in temperature (GFDL model), and one that projects 
-                moderate changes (NCAR model). Find more information on the models chosen for this tool in the Final 
+                <p>Climate models can only estimate conditions based on the best available data, but each makes
+                different assumptions. This tool uses two of the top-performing models, giving users a chance to
+                explore a model that projects greater changes in temperature (GFDL model), and one that projects
+                moderate changes (NCAR model). Find more information on the models chosen for this tool in the Final
                 Report, linked from <a href="https://uaf-snap.org/project/future-projections-of-precipitation-for-alaska-infrastructure/">this page describing this project</a>.</p>
                 """
             )
@@ -259,6 +259,7 @@ footer = html.Footer(
 <footer class="container">
     <div class="wrapper is-size-6">
         <img src="{path_prefix}assets/UAF.svg"/>
+        <img src="{path_prefix}assets/accap.png"/>
         <div class="wrapped">
             <p>This tool was developed by the <a href="https://uaf-snap.org">Scenarios Network for Alaska & Arctic Planning (SNAP)</a> and <a href="http://www.neptuneinc.org/">Neptune Inc.</a> from data provided by the National Weather Service Atlas 14 system and climatological forecast data generated by Peter Bieniek of the University of Alaska Fairbanks. SNAP is a research group at the <a href="https://uaf-iarc.org/">International Arctic Research Center (IARC)</a> at the <a href="https://uaf.edu/uaf/">University of Alaska Fairbanks (UAF)</a>.</p>
             <p>Copyright &copy; {current_year} University of Alaska Fairbanks.  All rights reserved.</p>
