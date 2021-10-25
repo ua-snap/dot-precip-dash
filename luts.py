@@ -11,19 +11,19 @@ title = "Future Projections of Precipitation for Alaska Infrastructure"
 url = "https://snap.uaf.edu"
 preview = "http://snap.uaf.edu/assets/preview.png"
 description = "Check precipitation frequency forecast data for any part of Alaska."
-gtag_id = os.getenv("GTAG_ID", default="")
+
 index_string = f"""
 <!DOCTYPE html>
 <html>
     <head>
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id={gtag_id}"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3978613-23"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){{dataLayer.push(arguments);}}
           gtag('js', new Date());
 
-          gtag('config', '{gtag_id}');
+          gtag('config', 'UA-3978613-23');
         </script>
         {{%metas%}}
         <title>{{%title%}}</title>

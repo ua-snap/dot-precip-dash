@@ -15,9 +15,7 @@ from data import fetch_api_data, DASH_LOG_LEVEL
 import luts
 
 
-app = dash.Dash(
-    __name__, requests_pathname_prefix=path_prefix, prevent_initial_callbacks=True
-)
+app = dash.Dash(__name__, prevent_initial_callbacks=True)
 
 # AWS Elastic Beanstalk looks for application by default,
 # if this variable (application) isn't set you will get a WSGI error.
@@ -225,4 +223,4 @@ def return_pf_data(lat, lon, ts_str, units):
 
 
 if __name__ == "__main__":
-    application.run(debug=os.getenv("FLASK_DEBUG") or False, port=8080)
+    application.run(debug=os.getenv("FLASK_DEBUG", default=False), port=8080)
