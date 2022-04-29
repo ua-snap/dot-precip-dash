@@ -236,7 +236,7 @@ explainer_section = wrap_in_section(
                 <h3 class="title is-5">About the models: GFDL-CM3 and NCAR-CCSM4</h3>
                 <p>Climate models can only estimate conditions based on the best available data, but each makes
                 different assumptions. This tool uses two of the top-performing models, giving users a chance to
-                explore a model that projects greater changes in temperature (GFDL model), and one that projects
+                explore a model that projects greater changes in precipitation (GFDL model), and one that projects
                 moderate changes (NCAR model). Find more information on the models chosen for this tool in the Final
                 Report, linked from <a href="https://uaf-snap.org/project/future-projections-of-precipitation-for-alaska-infrastructure/">this page describing this project</a>.</p>
                 """
