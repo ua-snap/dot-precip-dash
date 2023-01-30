@@ -16,14 +16,11 @@ index_string = f"""
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3978613-23"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){{dataLayer.push(arguments);}}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-3978613-23');
+        <script async defer 
+            data-website-id="da73d5d1-4fd1-4fdf-b7ed-20a39fc7a523"
+            data-do-not-track="true"
+            data-domains="snap.uaf.edu"
+            src="https://umami.snap.uaf.edu/umami.js">
         </script>
         {{%metas%}}
         <title>{{%title%}}</title>
