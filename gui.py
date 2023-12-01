@@ -58,25 +58,6 @@ header = ddsih.DangerouslySetInnerHTML(
       <img src="{path_prefix}assets/snap_acronym.svg">
     </a>
 
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div class="navbar-menu">
-
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a href="https://uaf-iarc.typeform.com/to/mN7J5cCK#tool=Future%20Projections%20of%20Precipitation%20for%20Alaska" class="button is-link" target="_blank">
-            Feedback
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 </nav>
 </div>
 """
