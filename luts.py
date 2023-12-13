@@ -20,7 +20,7 @@ index_string = f"""
             data-website-id="da73d5d1-4fd1-4fdf-b7ed-20a39fc7a523"
             data-do-not-track="true"
             data-domains="snap.uaf.edu"
-            src="https://umami.snap.uaf.edu/umami.js">
+            src="https://umami.snap.uaf.edu/script.js">
         </script>
         {{%metas%}}
         <title>{{%title%}}</title>
